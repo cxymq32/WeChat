@@ -1,0 +1,65 @@
+<!--index.wxml-->
+<view class="page">
+  <view class="page__hd" style="background-image:url('http://demo.zhilengzhire.com/weui-SPA-myImg/009.png');">
+    <view  bindtap="bindViewTap" class="userinfo">
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover" style="background-image: url('{{myImg[9].url}}');"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      
+    </view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-panel">
+        <view class="weui-panel__bd">
+            <view class="weui-media-box weui-media-box_small-appmsg">
+                <view class="weui-cells weui-cells_in-small-appmsg">
+                    <navigator url="{{navi[0]}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                        <view class="weui-cell__hd"><image src="{{myImg[1].url}}" style="width: 20px;height: 20px;margin-right: 5px" /></view>
+                        <view class="weui-cell__bd weui-cell_primary">
+                            <view>{{myImg[1].title}}</view>
+                        </view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                    </navigator>
+                    <navigator url="{{navi[1]}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                        <view class="weui-cell__hd"><image src="{{myImg[2].url}}" style="width: 20px;height: 20px;margin-right: 5px" /></view>
+                        <view class="weui-cell__bd weui-cell_primary">
+                            <view>{{myImg[2].title}}</view>
+                        </view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                    </navigator>
+                    <navigator url="{{navi[2]}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                        <view class="weui-cell__hd"><image src="{{myImg[3].url}}" style="width: 20px;height: 20px;margin-right: 5px" /></view>
+                        <view class="weui-cell__bd weui-cell_primary">
+                            <view>{{myImg[3].title}}</view>
+                        </view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                    </navigator>
+                    
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="weui-panel">
+        <view class="weui-panel__bd">
+            <view class="weui-media-box weui-media-box_small-appmsg">
+                <view class="weui-cells weui-cells_in-small-appmsg">
+                    <navigator url="{{navi[3]}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                        <view class="weui-cell__hd"><image src="{{myImg[5].url}}" style="width: 20px;height: 20px;margin-right: 5px" /></view>
+                        <view class="weui-cell__bd weui-cell_primary">
+                            <view>{{myImg[5].title}}</view>
+                        </view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                    </navigator>
+                    <navigator url="{{navi[4]}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                        <view class="weui-cell__hd"><image src="{{myImg[6].url}}" style="width: 20px;height: 20px;margin-right: 5px" /></view>
+                        <view class="weui-cell__bd weui-cell_primary">
+                            <view>{{myImg[6].title}}</view>
+                        </view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                    </navigator>
+                </view>
+            </view>
+        </view>
+    </view>
+  </view>
+  <view class="page__ft"></view>
+</view>

@@ -1,0 +1,35 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/shopdetail/shopdetail",
+    "pages/my/my",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "navigationBarTextStyle": "#fff",
+    "navigationBarTitleText": "WeUI-SPA",
+    "navigationBarBackgroundColor": "#39c3f2",
+    "backgroundColor": "#f8f8f8"
+  },
+  "tabBar": {
+    "color": "#aaaaaa",
+    "selectedColor": "#39c3f2",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "店铺",
+        "iconPath": "image/shop.png",
+        "selectedIconPath": "image/shop-s.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "image/user.png",
+        "selectedIconPath": "image/user-s.png"
+      }
+    ]
+  }
+}
