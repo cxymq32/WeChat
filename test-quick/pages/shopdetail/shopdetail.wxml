@@ -8,7 +8,7 @@
     duration="{{duration}}">
       <block wx:for="{{imgUrls}}" wx:key="*this">
         <swiper-item>
-          <image src="{{item}}" class="slide-image" style="width:100%;"/>
+          <image src="{{item}}" data-index='{{index}}' class="slide-image" style="width:100%;" bindtap='previewImg'/>
         </swiper-item>
       </block>
     </swiper>
@@ -67,7 +67,7 @@
           <input class="weui-input" type="number" bindinput="bindPhone" maxlength="11" placeholder="联系电话" />
         </view>
     </view>
-    <view class="remark"><textarea bindinput="bindTextAreaBlur" placeholder="备注 " auto-height /></view>
+    <view class="remark"><textarea bindinput="bindTextAreaBlur" placeholder="留言" auto-height /></view>
     <view class='comfirmB'>
       <button bindtap='comfirorder' class='confirmorder' type="primary" size="0" >预约</button>
     </view>
@@ -80,5 +80,5 @@
 
 
 <view class='AD'>
-<navigator url="../shopdetail/shopdetail">@可可网络-联系我们</navigator>
+<navigator url="../companyInfo/companyInfo">----------@可可网络-联系我们------------</navigator>
 </view>

@@ -1,7 +1,7 @@
 //app.js
 App({
   data: {
-    servsers: "https://localhost:8443/test-json"
+    servsers: "https://123.207.175.166:443/test-json"
   },
   onLaunch: function () {
     
@@ -37,6 +37,27 @@ App({
         }
       }
     })
+  },
+  
+  getUserInfo:function (cb) {
+    var that = this;
+    if (this.globalData.userInfo) {
+      typeof cb == "function" && cb(this.globalData.userInfo)
+    } else {
+      //调用登录接口
+      wx.login({
+        success: function () {
+          wx.getUserInfo({
+            success: function (res) {
+              that.globalData.userInfo = res.userInfo
+              console.log(res)
+              typeof cb == "function" && cb(that.globalData.userInfo)
+            }
+          })
+        },
+
+      })
+    }
   },
   globalData: {
     userInfo: null

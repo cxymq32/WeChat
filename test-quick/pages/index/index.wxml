@@ -12,7 +12,7 @@
 <view class="shop">
   <block wx:for="{{shopList}}" wx:key=''>
     <navigator url="../shopdetail/shopdetail?shopId={{item.id}}">
-      <view class='shop-cotent model-buttom'>
+      <view class='shop-cotent'>
         <view class='shop-image'><image class='shop-image-i' src='{{item.mainImage}}'/></view>
         <view class='shop-introduce'>
           <view>{{item.shopName}}</view>
@@ -23,4 +23,5 @@
     </navigator>    
   </block>
 </view>
-<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">sssss </button>
+<text wx:if="{{load == 1}}">加载中...</text>
+<text wx:if="{{load == 2}}">到底了</text>

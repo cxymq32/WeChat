@@ -8,23 +8,4 @@
   padding: 200rpx 0;
   box-sizing: border-box;
 } 
-.w60{
-  float: left;
-  width: 60%;
-}
-.w20{
-  float: left;
-  width: 20%;
-}
-.w80{
-  float: left;
-  width: 80%;
-}
-.w40{
-  float: left;
-  width: 40%;
-}
 
-.left{
-  float:left;
-}

@@ -1,13 +1,16 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/shopdetail/shopdetail",
+    "pages/myorder/myorder",
     "pages/my/my",
+    "pages/companyInfo/companyInfo",
+    "pages/feedback/feedback",
+    "pages/shopdetail/shopdetail",
     "pages/logs/logs"
   ],
   "window": {
     "navigationBarTextStyle": "#fff",
-    "navigationBarTitleText": "WeUI-SPA",
+    "navigationBarTitleText": "COCO",
     "navigationBarBackgroundColor": "#39c3f2",
     "backgroundColor": "#f8f8f8"
   },

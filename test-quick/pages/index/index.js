@@ -1,4 +1,6 @@
 var app = getApp();
+var page = 1;
+var load = 0;
 Page({
   /**
    * 页面的初始数据
@@ -8,14 +10,14 @@ Page({
     inputVal: "",
     chooseItem: '',
     shopListTemp: "",
-    shopList: ""
+    shopList: "",
+    load : 0,
   },
   
   clearInput: function () {
     this.setData({
       inputVal: "",
     });
-    this.inputTyping()
   },
   inputTyping: function (e) {
     this.setData({
@@ -100,7 +102,38 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log("到底了")
+    var that = this;
+    if (load == 0) {
+      that.setData({
+        load: 1
+      })
+      load = 1;
+      page = page + 1;
+      wx.request({
+        url: getApp().data.servsers + '/getByPage', //仅为示例，并非真实的接口地址
+        data: {
+          page: page
+        },
+        method: 'get',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: function (res) {
+          if (res.data.length==0){
+            that.setData({
+              load: 2
+            })
+            load = 2;
+          }else{
+            that.setData({
+              shopList: that.data.shopList.concat(res.data),
+              load : 0
+            });
+            load = 0;
+          }
+        }
+      })
+    }
   },
 
   /**
@@ -113,5 +146,20 @@ Page({
     console.log(e.detail.errMsg)
     console.log(e.detail.iv)
     console.log(e.detail.encryptedData)
-  } 
+  },
+  pay:function(){
+    console.log("pay...")
+    wx.requestPayment({
+      'timeStamp': '',
+      'nonceStr': '',
+      'package': '',
+      'signType': 'MD5',
+      'paySign': '',
+      'success': function (res) {
+        console.log("pay success...")
+      },
+      'fail': function (res) {
+      }
+    })
+  }
 })
