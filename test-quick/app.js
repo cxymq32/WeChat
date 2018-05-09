@@ -1,65 +1,46 @@
 //app.js
 App({
   data: {
-    servsers: "https://123.207.175.166:443/test-json"
+    // servsers: "https://123.207.175.166:443/test-json"
+    servsers: "https://127.0.0.1:8443/test-json"
   },
   onLaunch: function () {
-    
-    // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        console.log(res)
-      }
-    })
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
-              }
-            }
-          })
-        }
-      }
-    })
+    var opid = wx.getStorageSync('openid');
+    console.log(opid);    
+    if (!opid){
+      this.getUserInfo();
+    }
   },
   
   getUserInfo:function (cb) {
     var that = this;
-    if (this.globalData.userInfo) {
-      typeof cb == "function" && cb(this.globalData.userInfo)
-    } else {
       //调用登录接口
       wx.login({
-        success: function () {
+        success: function (res) {
+          console.log(res)
+          wx.request({
+            //后台接口地址
+            url: 'https://api.weixin.qq.com/sns/jscode2session',
+            data: {
+              appid: 'wx7255a01c5dfe1f7c',
+              secret: 'e035d9830443adaa943e7f6415b20c21',
+              grant_type: 'authorization_code',
+              js_code: res.code,
+            },
+            method: 'GET',
+            header: { 'content-type': 'application/json' },
+            success: function (res) {
+              console.log(res)
+              wx.setStorageSync('openid', res.data.openid);
+            }
+          })
           wx.getUserInfo({
             success: function (res) {
-              that.globalData.userInfo = res.userInfo
-              console.log(res)
-              typeof cb == "function" && cb(that.globalData.userInfo)
+              wx.setStorageSync('userInfo', res.userInfo);
             }
           })
         },
 
       })
-    }
-  },
-  globalData: {
-    userInfo: null
-  },
+  }
 })

@@ -1,0 +1,4 @@
+  <view class="collect">
+    <image src="../../image/no_collect.png" style="width:50%;height:150px;"></image>
+    <view class="text">您还没有收藏</view>
+  </view>

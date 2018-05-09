@@ -82,3 +82,9 @@
   text-align:center;
 
 }
+.loading{
+  text-align: center;
+  color:#CCC;
+  font-size: 10px;
+  margin: 10px;
+}

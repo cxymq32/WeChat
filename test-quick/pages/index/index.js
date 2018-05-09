@@ -17,6 +17,7 @@ Page({
   clearInput: function () {
     this.setData({
       inputVal: "",
+      shopList:this.data.shopListTemp
     });
   },
   inputTyping: function (e) {
@@ -25,7 +26,7 @@ Page({
     });
     var that = this;
     wx.request({
-      url: getApp().data.servsers + '/getByPage', //仅为示例，并非真实的接口地址
+      url: getApp().data.servsers + '/getShopByPage', //仅为示例，并非真实的接口地址
       data: {
         shopName: e.detail.value,
       },
@@ -46,7 +47,7 @@ Page({
   onLoad: function (options) {
     var that = this;
     wx.request({
-      url: getApp().data.servsers +'/getByPage', //仅为示例，并非真实的接口地址
+      url: getApp().data.servsers +'/getShopByPage', //仅为示例，并非真实的接口地址
       data: {
       },
       method: 'get',
@@ -110,7 +111,7 @@ Page({
       load = 1;
       page = page + 1;
       wx.request({
-        url: getApp().data.servsers + '/getByPage', //仅为示例，并非真实的接口地址
+        url: getApp().data.servsers + '/getShopByPage', //仅为示例，并非真实的接口地址
         data: {
           page: page
         },
@@ -147,19 +148,21 @@ Page({
     console.log(e.detail.iv)
     console.log(e.detail.encryptedData)
   },
-  pay:function(){
-    console.log("pay...")
-    wx.requestPayment({
-      'timeStamp': '',
-      'nonceStr': '',
-      'package': '',
-      'signType': 'MD5',
-      'paySign': '',
-      'success': function (res) {
-        console.log("pay success...")
+  pay: function () {
+    var a = wx.getStorageSync('openId');
+    console.log(a)
+    wx.request({
+      url: getApp().data.servsers + '/pay',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
       },
-      'fail': function (res) {
+      data: { 'openid': "otnGe4uyCaDFPj5v5ek-PuasF9gI" },
+      success: function (res) {
+        var prepay_id = res.data.prepay_id;
+        console.log("统一下单返回 prepay_id:" + prepay_id);
+        
       }
     })
-  }
+  }  
 })

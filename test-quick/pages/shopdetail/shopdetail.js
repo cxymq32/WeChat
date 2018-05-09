@@ -159,7 +159,7 @@ Page({
     var shopId = this.data.shopId;
     wx.showModal({
       title: this.data.phone,
-      content: '您' + this.data.people + '人将于' + this.data.day + this.data.hour + "时" + this.data.minute + "分到店，备注:" + remark,
+      content: '您' + people + '人将于' + date + "分到店，备注:" + remark,
       success: function (res) {
         if (res.confirm) {
           wx.showLoading({
@@ -176,12 +176,16 @@ Page({
             },
             success: function (res) {
               if(res.data){
-              wx.hideLoading()
-              wx.showToast({
-                title: '预约成功',
-                icon: 'success',
-                duration: 2000
-              })
+                wx.hideLoading()
+                wx.showToast({
+                  title: '预约成功',
+                  icon: 'success',
+                  duration: 2000
+                })
+                setTimeout(function(){wx.redirectTo ({
+                  url:"../myorder/myorder"
+                })}
+                ,2000)
               }
             }
           })
@@ -203,7 +207,7 @@ Page({
   onLoad: function (options) {
     var that = this;
     wx.request({
-      url: getApp().data.servsers +'/getByPage', //仅为示例，并非真实的接口地址
+      url: getApp().data.servsers +'/getShopByPage', //仅为示例，并非真实的接口地址
       data: {
         id: options.shopId,
       },

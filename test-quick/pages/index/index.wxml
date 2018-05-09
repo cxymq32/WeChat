@@ -23,5 +23,9 @@
     </navigator>    
   </block>
 </view>
+<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取手机号</button>
+<button bindtap='pay'>支付</button>
+<view class='loading'>
 <text wx:if="{{load == 1}}">加载中...</text>
-<text wx:if="{{load == 2}}">到底了</text>
+<text wx:if="{{load == 2}}">--------我的有底线的--------</text>
+</view>
