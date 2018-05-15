@@ -27,14 +27,25 @@ Page({
         })
       }
     })
-  
-},  
-
-
-  onLoad: function () {
+  },  
+  onShow: function () {
+    console.log("onShow")
     var that = this;
     wx.getUserInfo({
       success: function (res) {
+        console.log(res)
+        that.setData({
+          userInfo: res.userInfo
+        })
+      }
+    })
+  },
+  onLoad: function () {
+    console.log("onload")
+    var that = this;
+    wx.getUserInfo({
+      success: function (res) {
+        console.log(res)
         that.setData({
           userInfo: res.userInfo
         })

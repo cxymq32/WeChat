@@ -1,3 +1,4 @@
+var app = getApp();
 Page({
 
   /**
@@ -61,5 +62,42 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  getPhoneNumber: function (e) {
+    console.log(e.detail.errMsg)
+    console.log(e.detail.iv)
+    console.log(e.detail.encryptedData)
+  },
+  pay: function () {
+    if(!wx.getStorageSync("openid")){
+      app.getUserInfo();
+    }
+    console.log(wx.getStorageSync("openid"))
+    wx.request({
+      //后台接口地址
+      url: app.data.servsers +"/pay/getPrepay",
+      data: {
+        openid: wx.getStorageSync("openid")
+      },
+      method: 'GET',
+      header: { 'content-type': 'application/json' },
+      success: function (res) {
+        console.log(res.data)
+        wx.requestPayment(
+          {
+            'timeStamp': res.data.timestamp,
+            'nonceStr': res.data.nonceStr,
+            'package': res.data.packages,
+            'signType': 'MD5',
+            'paySign': res.data.finalsign,
+            'success': function (res) { console.info(res) },
+            'fail': function (res) { console.info(res)},
+            'complete': function (res) {
+              console.info(res)
+             }
+        })
+      }
+    })
+
+  }  
 })

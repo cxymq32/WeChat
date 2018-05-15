@@ -18,7 +18,14 @@
   font-size:12px;
 }
 .confirmorder{
-  margin: 0px 30px;
+  margin: 0px 5%;
+  width: 50%;  
+  display: inline-block;
+}
+.order{
+  margin: 0px 5%;
+  width: 30%;
+  display: inline-block
 }
 .cancel{
   float: left;
@@ -59,16 +66,17 @@ button[plain]{
 }
 .time{  
   display: inline-block;
-  width: 70%;
+  width: 65%;
   margin-left: 10px;
 }
 .people{
   display: inline-block;
 }
 .icon-as{
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border: 1px solid #CCC;
+  margin: -5px 5px;
 }
 .location{
   float: left;
@@ -91,12 +99,13 @@ button[plain]{
   border: 1px solid #CCC;
   border-radius: 5px;
   margin: 10px 10px;
+  height: 70px;
 }
 .navigation{
   border: 1px solid #999999;
   border-radius: 5px;
   padding: 1px 2px;
-  background: #C7C7C7;
+  background: #F2F2F2;
   
 }
 .comfirmB{
@@ -115,4 +124,8 @@ button[plain]{
   text-align: center;
   font-size: 10px;
   color: 	#DEDEDE;
+}
+.getphone{
+  display: inline-block;
+  position: absolute;
 }

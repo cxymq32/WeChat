@@ -11,21 +11,19 @@
 </view>	
 <view class="shop">
   <block wx:for="{{shopList}}" wx:key=''>
+  <view class='shop-cotent'>
     <navigator url="../shopdetail/shopdetail?shopId={{item.id}}">
-      <view class='shop-cotent'>
         <view class='shop-image'><image class='shop-image-i' src='{{item.mainImage}}'/></view>
         <view class='shop-introduce'>
           <view>{{item.shopName}}</view>
           <view class='surplus'><text>{{item.adress}}</text></view>
         </view>
-        <view class='shop-order'><button class='order' type="default" size="2" >预订</button></view>
-      </view>
-    </navigator>    
+        <!-- <view class='shop-order'><button class='order' type="default" size="2" >预订</button></view> --> 
+    </navigator>
+    </view>    
   </block>
 </view>
-<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取手机号</button>
-<button bindtap='pay'>支付</button>
 <view class='loading'>
 <text wx:if="{{load == 1}}">加载中...</text>
-<text wx:if="{{load == 2}}">--------我的有底线的--------</text>
+<text wx:if="{{load == 2}}">--------我是有底线的--------</text>
 </view>

@@ -32,6 +32,7 @@
   </view>   
 </view> 
 <view class='function'>
+<form bindsubmit="comfirorder" report-submit>
 <view class='timePeople'>
   <text bindtap='showtime' class='time'>到店时间：{{day}}{{hour}}时{{minute}}分</text>
   <view class='people'>
@@ -61,19 +62,24 @@
       </view>
     
 
-    <view class='leftPhone' bindtap=''>
+    <view class='leftPhone' bindtap='' style='display:{{hideOther}}'>
         <text style='float:left;'>预留手机号：</text>
         <view>
-          <input class="weui-input" type="number" bindinput="bindPhone" maxlength="11" placeholder="联系电话" />
+
+          <input type="number" bindinput="bindPhone" maxlength="11" placeholder="联系电话" />          <!-- <button class='getphone' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"  plain="true" >获取手机号码</button> -->
         </view>
     </view>
-    <view class="remark"><textarea bindinput="bindTextAreaBlur" placeholder="留言" auto-height /></view>
-    <view class='comfirmB'>
-      <button bindtap='comfirorder' class='confirmorder' type="primary" size="0" >预约</button>
+    <view class="remark" style='display:{{hideOther}}'>
+      <textarea bindinput="bindTextAreaBlur" placeholder="留言" style='height:70px'/>
     </view>
+    <view class='comfirmB' style='display:{{hideOther}}'>
+      <button formType="submit" class='confirmorder' type="primary" size="0" >预约</button>
+      <button bindtap='toMenu' class='order' type="warn" size="0" >菜单</button>
+    </view>
+    </form>
   </view>  
 
-<view class='sale model-buttom'>
+<view class='sale model-buttom' style='display:{{hideOther}}'>
   <text class='sale_title'>店内优惠\n</text>
   <text>{{sale}}</text>
 </view>

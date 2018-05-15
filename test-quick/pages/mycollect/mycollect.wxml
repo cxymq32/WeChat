@@ -2,3 +2,5 @@
     <image src="../../image/no_collect.png" style="width:50%;height:150px;"></image>
     <view class="text">您还没有收藏</view>
   </view>
+<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取手机号</button>
+<button bindtap='pay'>支付</button>

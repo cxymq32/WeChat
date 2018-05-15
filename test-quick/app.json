@@ -1,12 +1,13 @@
 {
   "pages":[
-    "pages/index/index",
-    "pages/mycollect/mycollect",
     "pages/myorder/myorder",
+    "pages/index/index",
+    "pages/food/food",
+    "pages/shopdetail/shopdetail",
+    "pages/mycollect/mycollect",
     "pages/my/my",
     "pages/companyInfo/companyInfo",
-    "pages/feedback/feedback",
-    "pages/shopdetail/shopdetail"
+    "pages/feedback/feedback"
   ],
   "window": {
     "navigationBarTextStyle": "#fff",

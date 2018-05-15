@@ -60,6 +60,9 @@ Page({
           shopList: res.data,
           shopListTemp: res.data,
         });
+      },
+      fail: function (res) {
+        console.log("fail!")
       }
     })
   },
@@ -142,27 +145,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-  getPhoneNumber: function (e) {
-    console.log(e.detail.errMsg)
-    console.log(e.detail.iv)
-    console.log(e.detail.encryptedData)
-  },
-  pay: function () {
-    var a = wx.getStorageSync('openId');
-    console.log(a)
-    wx.request({
-      url: getApp().data.servsers + '/pay',
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: { 'openid': "otnGe4uyCaDFPj5v5ek-PuasF9gI" },
-      success: function (res) {
-        var prepay_id = res.data.prepay_id;
-        console.log("统一下单返回 prepay_id:" + prepay_id);
-        
-      }
-    })
-  }  
+  }
 })

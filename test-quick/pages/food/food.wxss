@@ -1,0 +1,7 @@
+.foodMenu{
+  width: 100%;
+  height: 200px;
+}
+.blockImage{
+  height: 400px;
+}

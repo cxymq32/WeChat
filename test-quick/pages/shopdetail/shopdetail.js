@@ -44,6 +44,7 @@ Page({
     interval: 3000,
     duration: 300,
     showtime: "none",
+    hideOther: "block",
     day:"今天",
     days: days,
     hour:h,
@@ -82,7 +83,8 @@ Page({
   },
   showtime: function () {
     this.setData({
-      showtime: "block"
+      showtime: "block",
+      hideOther:"none"
     })
   }, 
   addP: function () {
@@ -98,11 +100,12 @@ Page({
     }
   },
   canceltime: function () {
-    this.setData({ showtime: "none" })
+    this.setData({ showtime: "none", hideOther: "block" })
+    
     
    },
   comfirmtime: function () {
-    this.setData({ showtime: "none" })
+    this.setData({ showtime: "none", hideOther: "block" })
   }, 
   bindPhone: function (e) {
     this.setData({
@@ -116,7 +119,6 @@ Page({
   },
   //预览图片
   previewImg:function (e) {
-    console.log(e.currentTarget.dataset.index);
     var index = e.currentTarget.dataset.index;
     var imgArr = this.data.imgUrls;
     wx.previewImage({
@@ -142,8 +144,17 @@ Page({
       scale: 29
     })
   },
+  //菜单
+  toMenu : function(){
+    wx.navigateTo({
+      url: '../../pages/food/food?shopId=2'
+    })
+  },
   //预订
-  comfirorder:function(e){
+  comfirorder: function (e) {
+    if (!wx.getStorageSync("openid")) {
+      app.getUserInfo();
+    }    
     if (!this.data.phone){
       wx.showToast({
        title: '请填写预留手机号码',
@@ -165,10 +176,12 @@ Page({
           wx.showLoading({
             title: '预约中',
           })
+          console.log(e.detail.formId)
           wx.request({
             url: getApp().data.servsers+'/comfirorder', //仅为示例，并非真实的接口地址
             data: {
               arriveTime: date, phone: phone, people: people, remark: remark,shopId:shopId
+              , openId: wx.getStorageSync("openid"), formId: e.detail.formId
             },
             method: 'POST',
             header: {
@@ -182,6 +195,7 @@ Page({
                   icon: 'success',
                   duration: 2000
                 })
+                //===========
                 setTimeout(function(){wx.redirectTo ({
                   url:"../myorder/myorder"
                 })}
@@ -193,8 +207,6 @@ Page({
     }
     })
   },
-
- 
   onShareAppMessage: function (options) {
     var that = this;
     var shareObj = {
