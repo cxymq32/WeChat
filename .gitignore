@@ -1,5 +1,5 @@
-/target/*
-/WebRoot/WEB-INF/classes/*
+target
+WebRoot/WEB-INF/classes
 /RemoteSystemsTempFiles/*
 /Servers/*
 .recommenders/*
