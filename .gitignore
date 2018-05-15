@@ -1,6 +1,10 @@
+*.class
+.project
+
 target
 WebRoot/WEB-INF/classes
-/RemoteSystemsTempFiles/*
-/Servers/*
-.recommenders/*
-.metadata/*
+
+RemoteSystemsTempFiles
+Servers
+.recommenders
+.metadata
