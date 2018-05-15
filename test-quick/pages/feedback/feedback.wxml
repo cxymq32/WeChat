@@ -1,0 +1,8 @@
+
+<view class="area">
+  <textarea bindblur="bindTextAreaBlur" placeholder="说说您对我们的意见或建议，我们将不断改进，感谢您的支持！" />
+</view>
+<view class='phone'>
+  <input type="number" placeholder="留下您的联系方式，方便我们和您联系！"/>
+</view>
+<button form-type="submit" class="sub" type="default" size="default">提交</button>

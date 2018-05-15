@@ -1,0 +1,84 @@
+
+<view class='top'>
+    <!-- 轮播 -->
+    <swiper 
+    indicator-dots="{{indicatorDots}}"
+    autoplay="{{autoplay}}" 
+    interval="{{interval}}" 
+    duration="{{duration}}">
+      <block wx:for="{{imgUrls}}" wx:key="*this">
+        <swiper-item>
+          <image src="{{item}}" data-index='{{index}}' class="slide-image" style="width:100%;" bindtap='previewImg'/>
+        </swiper-item>
+      </block>
+    </swiper>
+</view>
+<view class='info'>
+  <view class='shopname model-buttom'>
+    {{shopName}}
+    <image class="share" src='../../image/share.png'/>
+    <button class='sharebutton' plain="true" data-name="shareBtn" open-type="share">发送给朋友</button>
+  </view>
+  
+
+  <view class='address' bindtap="goto">
+    <image class="location" src='../../image/location.png'/>
+    {{adress}}
+    <text class='navigation' >导航</text>
+  </view>
+
+  <view class='callphone'bindtap="call">
+    <image  class='icon-phone' src='../../image/phone.png'/>
+  </view>   
+</view> 
+<view class='function'>
+<view class='timePeople'>
+  <text bindtap='showtime' class='time'>到店时间：{{day}}{{hour}}时{{minute}}分</text>
+  <view class='people'>
+    <image bindtap='subP' class='icon-as' src='../../image/sub.png'/>
+      <text>{{people}}人</text>
+    <image bindtap='addP' class='icon-as' src='../../image/add.png'/>
+  </view>
+</view>
+
+    <view class='chosetime'>
+      <view class='button' style='display:{{showtime}}'>
+          <view><button bindtap='canceltime' class='cancel' type="default" size="0" >取消</button></view>
+          <view><button bindtap='comfirmtime' class='confirm' type="default" size="0" >确定</button></view>
+      </view>
+      <picker-view indicator-style="height: 50px;" style="width: 100%; height: 200px;display:{{showtime}}" value="{{value}}" bindchange="bindChange">
+
+        <picker-view-column>
+          <view wx:for="{{days}}" wx:key='' style="line-height: 50px">{{item}}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{hours}}" wx:key='' style="line-height: 50px">{{item}}时</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{minutes}}" wx:key='' style="line-height: 50px">{{item}}分</view>
+        </picker-view-column>
+      </picker-view>
+      </view>
+    
+
+    <view class='leftPhone' bindtap=''>
+        <text style='float:left;'>预留手机号：</text>
+        <view>
+          <input class="weui-input" type="number" bindinput="bindPhone" maxlength="11" placeholder="联系电话" />
+        </view>
+    </view>
+    <view class="remark"><textarea bindinput="bindTextAreaBlur" placeholder="留言" auto-height /></view>
+    <view class='comfirmB'>
+      <button bindtap='comfirorder' class='confirmorder' type="primary" size="0" >预约</button>
+    </view>
+  </view>  
+
+<view class='sale model-buttom'>
+  <text class='sale_title'>店内优惠\n</text>
+  <text>{{sale}}</text>
+</view>
+
+
+<view class='AD'>
+<navigator url="../companyInfo/companyInfo">----------@可可网络-联系我们------------</navigator>
+</view>

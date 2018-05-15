@@ -1,0 +1,27 @@
+<view  bindtap="bindViewTap" class="userinfo">
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}"/>
+      <text class='userName' >{{userInfo.nickName}}</text>
+</view>
+
+<view class='menu'>
+  <navigator url="../myorder/myorder" class="tab">
+      <image class="arrow" src="../../image/right_arrows.png"/>
+      <view class='mtext'>我的预约</view>
+  </navigator>
+  <navigator url="" class="tab">
+      <image class="arrow" src="../../image/right_arrows.png"/>
+      <view class='mtext'>我的收藏</view>
+  </navigator>
+
+  <view class='division'></view>
+
+  <navigator url="../feedback/feedback" class="tab">
+      <image class="arrow" src="../../image/right_arrows.png"/>
+      <view class='mtext'>意见反馈</view>
+  </navigator>
+
+  <view>
+    <button open-type="contact" class='tab_service' plain='true'>联系客服</button>
+    <image class="arrow" src="../../image/right_arrows.png"/>
+  </view>
+</view>

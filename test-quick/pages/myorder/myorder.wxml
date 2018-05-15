@@ -1,0 +1,22 @@
+<view class='list'>
+  <view class='item'>
+    <view class='left'><image class='image' src='http://p1.meituan.net/mogu/7187ed6dec98045a3e761e3cf83afd4e482186.jpg@600w_600h_1l'></image>
+    </view>
+    <view class='middle'>
+      <view class='name'>徒手餐厅米路姐动手吧</view>
+      <view class='name'>到店时间：2018.06.10 20.22</view>
+      <view class='name'>人数：2人</view>
+    </view>
+    <view class='right'>
+      <button class='orderB' type="default" size="1" >支付</button>
+    </view>
+  </view>    
+  <view class='item'>
+    <view class='left'><image class='image' src='http://p1.meituan.net/mogu/7187ed6dec98045a3e761e3cf83afd4e482186.jpg@600w_600h_1l'></image>
+    </view>
+    <view class='name'>徒手餐厅米路姐动手吧</view>
+    <view class='name'>到店时间：2018.06.10 20.22</view>
+    <view class='name'>人数：2人</view>
+  </view>  
+
+</view>
