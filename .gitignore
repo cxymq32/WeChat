@@ -1,6 +1,10 @@
 *.class
 .project
+.classpath
 
+my.properties
+
+.settings
 target
 WebRoot/WEB-INF/classes
 
