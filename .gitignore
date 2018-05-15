@@ -1,0 +1,6 @@
+*/target/*
+*/WebRoot/WEB-INF/classes/*
+/RemoteSystemsTempFiles/*
+/Servers/*
+.recommenders/*
+.metadata/*
