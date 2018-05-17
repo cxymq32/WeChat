@@ -1,31 +1,24 @@
 <view class='list'>
+<block wx:for="{{list}}" wx:key="">
   <view class='item'>
-    <view class='orderNum'>订单号：202029339201</view>  
-    <view class='left'><image class='image' src='http://p1.meituan.net/mogu/7187ed6dec98045a3e761e3cf83afd4e482186.jpg@600w_600h_1l'></image>
+    <view class='orderNum'>订单号：{{item.orderNum}}</view>
+    <view class='row'>  
+      <view class='left'><image class='image' src='{{item.shopImage}}'></image>
+      </view>
+      <view class='middle'>
+        <view class='shopName'>{{item.shopName}}</view>
+        <view class='arriveTime'>到店时间：{{item.arriveTime}}</view>
+        <view class='peopleNum'>人数：{{item.people}}人</view>
+        <view class='phone'>预留手机号：{{item.phone}}</view>
+      </view>
+    
+      <view class='cancelView'>
+        <text wx:if="{{item.status > 0}}" bindtap='confirm' class='confirm'>已确认</text>
+        <text wx:if="{{item.status <0}}" bindtap='canceled' class='canceled'>已取消</text>
+        <text wx:if="{{item.status == 0}}" data-order-id="{{item.id}}" bindtap='cancel' class='cancel' type="warn" size="0">取消</text>
+      </view>
     </view>
-    <view class='middle'>
-      <view class='shopName'>徒手餐厅米路姐动手吧</view>
-      <view class='arriveTime'>到店时间：2018年05月15日12时36分</view>
-      <view class='peopleNum'>人数：2人</view>
-      <view class='phone'>预留手机号：173456556655</view>
-    </view>
-    <view class='cancel'>
-      <button wx:if="{{1 > 0}}" formType="submit" class='cancel' type="warn" size="0">取消</button>
-      <text wx:if="{{-1 > 0}}" class='confirm'>已确认</text>
-    </view>
-  </view>     <view class='item'>
-    <view class='orderNum'>订单号：202029339201</view>  
-    <view class='left'><image class='image' src='http://p1.meituan.net/mogu/7187ed6dec98045a3e761e3cf83afd4e482186.jpg@600w_600h_1l'></image>
-    </view>
-    <view class='middle'>
-      <view class='shopName'>徒手餐厅米路姐动手吧</view>
-      <view class='arriveTime'>到店时间：2018年05月15日12时36分</view>
-      <view class='peopleNum'>人数：2人</view>
-      <view class='phone'>预留手机号：173456556655</view>
-    </view>
-    <view class='cancel'>
-      <button wx:if="{{-1 > 0}}" formType="submit" class='cancel' type="warn" size="0">取消</button>
-      <text wx:if="{{1 > 0}}" class='confirm'>已确认</text>
-    </view>
-  </view>   
+    <view class='remark'>留言：{{item.remark}}</view>
+  </view> 
+</block>  
 </view>
