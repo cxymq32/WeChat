@@ -24,20 +24,37 @@ public class ShopController extends BaseController {
 
 	public static SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日");
 
+	/** 预约下单 */
 	@ResponseBody
 	@RequestMapping("/comfirorder")
 	public boolean comfirorder(Model model, Order order, HttpSession session) {
+		Shop shop = shopService.findById(Shop.class, order.getShopId());
+		order.setShopName(shop.getShopName());
+		order.setShopImage(shop.getMainImage());
 		order.setCreateTime(new Date());
+		order.setOrderNum(System.currentTimeMillis());
+
+		// 设置到店时间
 		String time = order.getArriveTime();
 		if (time.indexOf("今天") > -1)
-			order.setArriveTime(sf.format(new Date()) + time.substring(2)+"分");
+			order.setArriveTime(sf.format(new Date()) + time.substring(2) + "分");
 		if (time.indexOf("明天") > -1)
-			order.setArriveTime(MyDate.getNextDay(new Date()) + time.substring(2)+"分");
+			order.setArriveTime(MyDate.getNextDay(new Date()) + time.substring(2) + "分");
 		orderService.save(order);
 		System.out.println("给商户发消息。。。。");
 		return true;
 	}
 
+	/** 取消 */
+	@ResponseBody
+	@RequestMapping("/cancelOrder")
+	public Object cancelOrder(long orderId, HttpSession session) {
+		Order order = orderService.findById(Order.class, orderId);
+		order.setStatus(-1);
+		orderService.update(order);
+		return true;
+	}
+	/** index获取shop列表 */
 	@ResponseBody
 	@RequestMapping("/getShopByPage")
 	public Object getShopByPage(Page page, Shop shop, HttpSession session) {
@@ -46,6 +63,7 @@ public class ShopController extends BaseController {
 		return list;
 	}
 
+	/** MyOrder获取order列表 */
 	@ResponseBody
 	@RequestMapping("/getOrderByPage")
 	public Object getOrderByPage(Page page, Order order, HttpSession session) {

@@ -15,8 +15,8 @@ public class OrderService extends BaseService {
 	public List<Order> getByPage(Page page, Order order) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Order.class);
 		if (order != null) {
-			if (order.getId() != null)
-				criteria.add(Restrictions.eq("userid", order.getOpenId()));
+			if (order.getOpenId() != null)
+				criteria.add(Restrictions.eq("openId", order.getOpenId()));
 		}
 		int start = (page.getPage() - 1) * page.getPageSize();
 		return (List<Order>) getHibernateTemplate().findByCriteria(criteria, start, page.getPageSize());
