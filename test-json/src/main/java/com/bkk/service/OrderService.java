@@ -18,6 +18,7 @@ public class OrderService extends BaseService {
 			if (order.getOpenId() != null)
 				criteria.add(Restrictions.eq("openId", order.getOpenId()));
 		}
+		criteria.addOrder(org.hibernate.criterion.Order.desc("id"));
 		int start = (page.getPage() - 1) * page.getPageSize();
 		return (List<Order>) getHibernateTemplate().findByCriteria(criteria, start, page.getPageSize());
 	}

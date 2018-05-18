@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Test</groupId>
-	<artifactId>test-ping</artifactId>
+	<artifactId>test-json</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>test-ping Maven Webapp</name>
@@ -13,6 +13,20 @@
 		<spring.version>4.3.3.RELEASE</spring.version>
 	</properties>
 	<dependencies>
+		<!-- 微信开发工具包 -->
+
+		<!-- https://mvnrepository.com/artifact/com.github.binarywang/weixin-java-common -->
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-common</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.github.binarywang/weixin-java-mp -->
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-mp</artifactId>
+			<version>2.2.0</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
