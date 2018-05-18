@@ -1,6 +1,5 @@
 var app = getApp();
 var page = 1;
-var load = 0;
 Page({
   /**
    * 页面的初始数据
@@ -8,17 +7,36 @@ Page({
   data: {
     inputShowed: false,
     inputVal: "",
-    chooseItem: '',
-    shopListTemp: "",
     shopList: "",
-    load : 0,
+    load:0
   },
-  
+  //获取首页数据
+  getIndexData:function(){
+    var that = this;
+    wx.request({
+      url: app.data.servsers + '/getShopByPage', //仅为示例，并非真实的接口地址
+      data: {
+      },
+      method: 'get',
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log(res.data)
+        that.setData({
+          shopList: res.data
+        });
+      },
+      fail: function (res) {
+        console.log(app.data.servsers + '/getShopByPage')
+      }
+    })
+  },
   clearInput: function () {
     this.setData({
       inputVal: "",
-      shopList:this.data.shopListTemp
     });
+    this.getIndexData();
   },
   inputTyping: function (e) {
     this.setData({
@@ -45,40 +63,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
-    wx.request({
-      url: app.data.servsers +'/getShopByPage', //仅为示例，并非真实的接口地址
-      data: {
-      },
-      method: 'get',
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (res) {
-        console.log(res.data)
-        that.setData({
-          shopList: res.data,
-          shopListTemp: res.data,
-        });
-      },
-      fail: function (res) {
-        console.log("fail!")
-      }
-    })
+    
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    this.getIndexData();
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    page=1;
+    this.setData({
+      shopList: "",
+      load:0
+    })
+    this.getIndexData();
   },
 
   /**
@@ -106,12 +110,12 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
+    console.log(this.data.load + '||' + page)
     var that = this;
-    if (load == 0) {
-      that.setData({
+    if (this.data.load == 0) {
+      this.setData({
         load: 1
       })
-      load = 1;
       page = page + 1;
       wx.request({
         url: getApp().data.servsers + '/getShopByPage', //仅为示例，并非真实的接口地址
@@ -127,13 +131,11 @@ Page({
             that.setData({
               load: 2
             })
-            load = 2;
           }else{
             that.setData({
               shopList: that.data.shopList.concat(res.data),
               load : 0
             });
-            load = 0;
           }
         }
       })

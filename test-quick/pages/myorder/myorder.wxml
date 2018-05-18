@@ -7,7 +7,7 @@
       </view>
       <view class='middle'>
         <view class='shopName'>{{item.shopName}}</view>
-        <view class='arriveTime'>到店时间：{{item.arriveTime}}</view>
+        <view class='arriveTime'>到店时间：<text class='time'>{{item.arriveTime}}</text></view>
         <view class='peopleNum'>人数：{{item.people}}人</view>
         <view class='phone'>预留手机号：{{item.phone}}</view>
       </view>
