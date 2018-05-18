@@ -33,8 +33,11 @@ Page({
     })
   },
   clearInput: function () {
+    page = 1;
     this.setData({
-      inputVal: "",
+      inputVal: "", 
+        shopList: "",
+        load: 0
     });
     this.getIndexData();
   },

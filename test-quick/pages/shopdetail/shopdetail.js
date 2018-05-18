@@ -216,10 +216,11 @@ Page({
     }
     return shareObj;
   },
-  onLoad: function (options) {
+  getDetail: function (options){
+    console.log(options)
     var that = this;
     wx.request({
-      url: getApp().data.servsers +'/getShopByPage', //仅为示例，并非真实的接口地址
+      url: getApp().data.servsers + '/getShopByPage', //仅为示例，并非真实的接口地址
       data: {
         id: options.shopId,
       },
@@ -247,10 +248,12 @@ Page({
         })
       }
     })
-    
     that.setData({
       shopId: options.shopId
     })
+  },
+  onLoad: function (options) {
+    this.getDetail(options);
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -262,8 +265,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-
+  onShow: function (options) {
   },
 
   /**
