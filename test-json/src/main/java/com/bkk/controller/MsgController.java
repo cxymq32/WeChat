@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bkk.common.MsgModel;
+import com.bkk.common.Model_Msg;
 import com.bkk.common.PayUtils;
 
 import net.sf.json.JSONObject;
@@ -18,7 +18,7 @@ public class MsgController {
 	/** 获取PrepayId */
 	@ResponseBody
 	@RequestMapping("/sengToMySelf")
-	public Object sengToMySelf(MsgModel msgModel) throws Exception {
+	public Object sengToMySelf(Model_Msg msgModel) throws Exception {
 		logger.info("openid=" + msgModel.getOpenid());
 		logger.info("formid=" + msgModel.getFormid());
 		logger.info("data=" + msgModel.getData());

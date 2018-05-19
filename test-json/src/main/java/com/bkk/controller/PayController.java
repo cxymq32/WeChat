@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bkk.common.PayModel;
+import com.bkk.common.Model_Pay;
 import com.bkk.common.PayUtils;
 
 @Controller
@@ -21,7 +21,7 @@ public class PayController {
 	/** 获取PrepayId */
 	@ResponseBody
 	@RequestMapping("/getPrepay")
-	public Object prepayId(PayModel payModel) throws Exception {
+	public Object prepayId(Model_Pay payModel) throws Exception {
 		String nonce_str = UUID.randomUUID().toString().replaceAll("-", "");// 32位随机数
 		String out_trade_no = System.currentTimeMillis() + "";// 商户订单号
 		String appid = "wx7255a01c5dfe1f7c";

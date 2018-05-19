@@ -1,6 +1,6 @@
 package com.bkk.common;
 
-public class PayModel {
+public class Model_Pay {
 	private String openid;
 	private String total_fee = "1";// 付款金额 0 分
 	private String finalsign;

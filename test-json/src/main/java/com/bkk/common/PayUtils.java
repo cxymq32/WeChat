@@ -82,11 +82,11 @@ public class PayUtils {
 			return "";
 		}
 	}
-	public static String postParams(String url, String params) {
+	public static String postParams(String url, String jsonParams) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpPost httpost = new HttpPost(url);
 		try {
-			httpost.setEntity(new StringEntity(params, "UTF-8"));
+			httpost.setEntity(new StringEntity(jsonParams, "UTF-8"));
 			httpost.setHeader("content-type","application/json");
 			HttpResponse response = client.execute(httpost);
 			return EntityUtils.toString(response.getEntity(), "UTF-8");

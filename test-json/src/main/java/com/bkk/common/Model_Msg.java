@@ -1,6 +1,6 @@
 package com.bkk.common;
 
-public class MsgModel {
+public class Model_Msg {
 	private String openid;
 	private String formid;
 	private String data;
