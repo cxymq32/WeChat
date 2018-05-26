@@ -4,7 +4,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}/admin"/>
 
 <!-- Jquery -->
-<script src="${ctx}/resources/jquery-3.3.1/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="${src}/resources/jquery-3.3.1/jquery-3.3.1.min.js" type="text/javascript"></script>	
 
 
 <!-- CSS -->
@@ -14,10 +14,10 @@
 <link href="${src}/resources/css/styles.css" rel="stylesheet"/>
 <link href="${src}/resources/css/bootstrap-table.css" rel="stylesheet"/>
 
-<!-- JS -->
+<!-- JS 
 <script src="${src}" type="text/javascript"></script>
 <script src="${src}" type="text/javascript"></script>
-
+-->
 <style>
 
 </style>

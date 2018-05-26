@@ -1,35 +1,39 @@
 package com.bkk.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import com.bkk.common.GZHUtils;
 import com.bkk.common.PayUtils;
-
-import net.sf.json.JSONObject;
 
 public class test {
 	public static SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-	// 菜单创建（POST） 限100（次/天）
-	public static String CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
-	// 获取access_token的接口地址（GET） 限200（次/天）
-	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb90a701330e3bab8&secret=69063f87f30a72feefdbf197909b7868";
 
-	public static void main(String[] args) {
-		String a = PayUtils.postParams(access_token_url, "");
-		JSONObject json = JSONObject.fromObject(a);
-		String access_token = (String) json.get("access_token");
-		System.out.println(access_token);
-		int result = 0;
-		String url = CREATE_MENU_URL.replace("ACCESS_TOKEN", access_token);
-		String menu = "{" + "     \"button\":[" + "     {    " + "          \"type\":\"click\","
-				+ "          \"name\":\"今日歌曲\"," + "          \"key\":\"V1001_TODAY_MUSIC\"" + "      }," + "      {"
-				+ "           \"name\":\"菜单\"," + "           \"sub_button\":[" + "           {    "
-				+ "               \"type\":\"view\"," + "               \"name\":\"搜索\","
-				+ "               \"url\":\"http://www.soso.com/\"" + "            }," + "            {"
-				+ "               \"type\":\"view\"," + "               \"name\":\"视频\","
-				+ "               \"url\":\"http://v.qq.com/\"" + "            }," + "            {"
-				+ "               \"type\":\"click\"," + "               \"name\":\"赞一下我们\","
-				+ "               \"key\":\"V1001_GOOD\"" + "            }]" + "       }]" + " }";
-		String jsonObject = PayUtils.postParams(url, menu);
-		System.out.println("jsonObject====>>" + jsonObject);
+	public static void main(String[] args) throws Exception {
+		String a = "{\"subscribe\":1,\"openid\":\"oAuZ-wJBtegn6Nw00Y5hrH7JhEdI\",\"nickname\":\"勿忘心安灬\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"\",\"province\":\"\",\"country\":\"约旦\",\"headimgurl\":\"http:\\/\\/thirdwx.qlogo.cn\\/mmopen\\/ceTMo16gvia6K09rcCSfc6KO6tunkdGglIgwQibUCFjBXXMicM829iafUAwv61R4eyic38Scicxv2Uljhg2gt1J3cVmLHeCnPN6sRf\\/132\",\"subscribe_time\":1527239263,\"remark\":\"\",\"groupid\":0,\"tagid_list\":[],\"subscribe_scene\":\"ADD_SCENE_QR_CODE\",\"qr_scene\":0,\"qr_scene_str\":\"\"}";
+//		String a = "<xml>" + "  <ToUserName><![CDATA[oAuZ-wJBtegn6Nw00Y5hrH7JhEdI]]></ToUserName>"
+//				+ "  <FromUserName><![CDATA[gh_a43d2eeb4e51]]></FromUserName>"
+//				+ "  <CreateTime><![CDATA[1527054017789]]></CreateTime>" + "  <MsgType><![CDATA[text]]></MsgType>"
+//				+ "  <content><![CDATA[Hi，你发的消息是：ppp]]></content>" + "</xml>";
+//		System.out.println(a.indexOf("CreateTime"));
+//		System.out.println(a.substring(0,a.indexOf("<CreateTime><![CDATA[")));
+//		System.out.println(a.substring(a.indexOf("</CreateTime>")));
+//		
+//		String msg = a.substring(0,a.indexOf("<CreateTime><![CDATA["))+"<CreateTime>"+new Date().getTime()+a.substring(a.indexOf("</CreateTime>"));
+//		System.out.println(msg);
+//		 System.out.println(GZHUtils.createMenu());
+//		 System.out.println(GZHUtils.getAccessToken());
+		// String t = GZHUtils.getAccessToken();
+		// System.out.println(t);
+		// send(t);
+	}
+
+	private static void send(String t) {
+		String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + t;
+		String content = "{" + "    \"touser\": \"oAuZ-wJBtegn6Nw00Y5hrH7JhEdI\", " + "    \"msgtype\": \"text\", "
+				+ "    \"text\": {" + "        \"content\": \"ss\\nss<a herf='baidu.com'>test</a>ssss\"" + "    }"
+				+ "}";
+		String a = PayUtils.postParams(url, content);
+		System.out.println(a);
 	}
 }

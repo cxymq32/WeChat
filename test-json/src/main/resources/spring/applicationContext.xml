@@ -86,7 +86,26 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<!--redis配置开始 -->
+	<bean id="jedisPoolConfig"
+		class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="maxActive" value="${redis.maxTotal}" />
+		<property name="testOnBorrow" value="true" />
+	</bean>
 
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="poolConfig"
+			ref="jedisPoolConfig" />
+		<constructor-arg name="host" value="${redis.host}" />
+		<constructor-arg name="port" value="${redis.port}"
+			type="int" />
+		<constructor-arg name="timeout"
+			value="${redis.maxWait}" />
+		<constructor-arg name="password"
+			value="${redis.password}" />
+	</bean>
+	<!-- redis配置结束 -->
 	<!-- 开启事务管理注解 -->
 	<aop:aspectj-autoproxy />
 	<tx:annotation-driven />

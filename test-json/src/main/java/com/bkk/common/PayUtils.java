@@ -19,16 +19,16 @@ import org.dom4j.io.SAXReader;
 
 import net.sf.json.JSONObject;
 
-
 public class PayUtils {
-	public static String getAccess_token(){
+	public static String getAccess_token() {
 		String tokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx7255a01c5dfe1f7c&secret=e035d9830443adaa943e7f6415b20c21";
 		String access_token_json = postWithXmlParams(tokenUrl, "");
 		JSONObject json = JSONObject.fromObject(access_token_json);
 		String access_token = (String) json.get("access_token");
-		System.out.println("access_token===>"+access_token);
+		System.out.println("access_token===>" + access_token);
 		return access_token;
 	}
+
 	/** 时间戳 */
 	public static String getTimeStamp() {
 		long seconds = System.currentTimeMillis() / 1000;
@@ -82,12 +82,13 @@ public class PayUtils {
 			return "";
 		}
 	}
+
 	public static String postParams(String url, String jsonParams) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpPost httpost = new HttpPost(url);
 		try {
 			httpost.setEntity(new StringEntity(jsonParams, "UTF-8"));
-			httpost.setHeader("content-type","application/json");
+			httpost.setHeader("content-type", "application/json");
 			HttpResponse response = client.execute(httpost);
 			return EntityUtils.toString(response.getEntity(), "UTF-8");
 		} catch (Exception e) {

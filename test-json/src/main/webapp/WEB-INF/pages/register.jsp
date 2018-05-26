@@ -72,7 +72,6 @@
 			<div class='login' onclick="login()">已有账户登陆</div>
 		</div>
 	</div>
-	<script src="${ctx}/resources/js/jquery-1.11.1.min.js"></script>
 	<script>
 		var name = 0;
 		function login() {

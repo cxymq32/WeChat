@@ -9,7 +9,6 @@ public class Page {
 	private String sort;
 	/** 排序的类型 */
 	private String order;
-
 	// ============================
 
 	public Page() {

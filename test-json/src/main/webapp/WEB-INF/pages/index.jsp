@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="common/include.jsp" %>
+<%@ include file="common/include.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,6 +47,7 @@
 		</form>
 		<ul class="nav menu">
 			<li class="active"><a href="index.html"><span class="glyphicon glyphicon-dashboard"></span> 我的店铺</a></li>
+			<li class="active"><a href="test.html"><span class="glyphicon glyphicon-dashboard"></span> 测试</a></li>
 		</ul>
 	</div><!--/.sidebar-->
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -128,13 +129,6 @@
 		</div>	
 	</form>
 	</div>	
-	<script src="${src}/resources/js/jquery-1.11.1.min.js"></script>
-	<script src="${src}/resources/js/bootstrap.min.js"></script>
-	<script src="${src}/resources/js/chart.min.js"></script>
-	<script src="${src}/resources/js/chart-data.js"></script>
-	<script src="${src}/resources/js/easypiechart.js"></script>
-	<script src="${src}/resources/js/easypiechart-data.js"></script>
-	<script src="${src}/resources/js/bootstrap-datepicker.js"></script>
 	<script>
 		!function ($) {
 		    $(document).on("click","ul.nav li.parent > a > span.icon", function(){          

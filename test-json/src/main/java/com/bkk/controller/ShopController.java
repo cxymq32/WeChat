@@ -12,15 +12,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bkk.common.GZHUtils;
 import com.bkk.common.MyDate;
 import com.bkk.common.Page;
 import com.bkk.domain.Order;
 import com.bkk.domain.Shop;
+import com.bkk.domain.User;
 
 @Controller
 @RequestMapping("/wx")
 public class ShopController extends BaseController {
-	Logger logger = Logger.getLogger(ShopController.class);
+	Logger log = Logger.getLogger(ShopController.class);
 
 	public static SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日");
 
@@ -41,7 +44,21 @@ public class ShopController extends BaseController {
 		if (time.indexOf("明天") > -1)
 			order.setArriveTime(MyDate.getNextDay(new Date()) + time.substring(2) + "分");
 		orderService.save(order);
-		System.out.println("给商户发消息。。。。");
+		log.info("给商户发消息。。。。");
+		List<User> listu = userService.findByShopId(order.getShopId());
+		JSONObject jsonContent = null;
+		JSONObject content = null;
+		for (User u : listu) {
+			jsonContent = new JSONObject();
+			jsonContent.put("touser", u.getOpenid());
+			jsonContent.put("msgtype", "text");
+			content = new JSONObject();
+			String str = order.getArriveTime()+"有"+order.getPeople()+"人将到店就餐，联系电话："+order.getPhone();
+			content.put("content", str);
+			jsonContent.put("text", content);
+			log.info("jsonContent.toJSONString()=====>" + jsonContent.toJSONString());
+			GZHUtils.sendMsg(jsonContent.toJSONString());
+		}
 		return true;
 	}
 
@@ -54,12 +71,13 @@ public class ShopController extends BaseController {
 		orderService.update(order);
 		return true;
 	}
+
 	/** index获取shop列表 */
 	@ResponseBody
 	@RequestMapping("/getShopByPage")
 	public Object getShopByPage(Page page, Shop shop, HttpSession session) {
 		List<Shop> list = shopService.getByPage(page, shop);
-		logger.info("list===>" + list.size());
+		log.info("list===>" + list.size());
 		return list;
 	}
 

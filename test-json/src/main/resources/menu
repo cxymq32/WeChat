@@ -1,0 +1,22 @@
+{
+	"button":[
+	{
+	  "type":"click",
+	  "name":"查看预约",
+	  "key":"key1"
+	},
+	{
+	   "name":"菜单",
+	   "sub_button":[
+	   {
+		   "type":"view",
+		   "name":"绑定商家",
+		   "url":"http://140.143.158.187/test-json/centercontroller/test"
+		},
+		{
+		   "type":"view",
+		   "name":"联系我们",
+		   "url":"http://v.qq.com/"
+		}]
+	}]
+}
