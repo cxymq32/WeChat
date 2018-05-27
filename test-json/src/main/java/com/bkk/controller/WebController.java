@@ -2,20 +2,18 @@ package com.bkk.controller;
 
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.Response;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.bkk.common.WebUtils;
 import com.bkk.domain.Shop;
 import com.bkk.domain.User;
-import com.bkk.service.OrderService;
-import com.bkk.service.ShopService;
-import com.bkk.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
@@ -73,7 +71,19 @@ public class WebController extends BaseController {
 
 	/** 保存店铺 */
 	@RequestMapping("/modifyShop")
-	public String save(Model model, HttpSession session, Shop shop) {
+	public String save(@RequestParam("files") MultipartFile[] files, Model model, HttpSession session, Shop shop) {
+		String path = this.getClass().getClassLoader().getResource("").getPath() + "pic";
+
+		// // 判断file数组不能为空并且长度大于0
+		// if (images != null && images.length > 0) {
+		// // 循环获取file数组中得文件
+		// for (int i = 0; i < images.length; i++) {
+		// MultipartFile file = images[i];
+		// // 保存文件
+		// String path2 = WebUtils.saveFile(file, path);
+		// System.out.println(path2);
+		// }
+		// }
 		if (shop.getLocation() == "")
 			shop.setLocation("37.367727,118.020893");
 		String[] location = shop.getLocation().split(",");

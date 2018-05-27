@@ -47,7 +47,7 @@
 		</form>
 		<ul class="nav menu">
 			<li class="active"><a href="index.html"><span class="glyphicon glyphicon-dashboard"></span> 我的店铺</a></li>
-			<li class="active"><a href="test.html"><span class="glyphicon glyphicon-dashboard"></span> 测试</a></li>
+			<li class=""><a href="test.html"><span class="glyphicon glyphicon-dashboard"></span> 测试</a></li>
 		</ul>
 	</div><!--/.sidebar-->
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -97,11 +97,11 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label>店铺门面图:</label>
-					<input class="form-control" name="mainImage" placeholder="图片链接地址" value="${shop.mainImage}">
+					<input class="" name="files" type="file">
 				</div>
 				<div class="form-group">
 					<label>轮播图1:</label>
-					<input class="form-control" name="image1" placeholder="图片链接地址" value="${shop.image1}">
+					<input class="" name="files" type="file">
 				</div>
 				<div class="form-group">
 					<label>轮播图2:</label>

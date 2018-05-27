@@ -25,9 +25,4 @@ public class BaseController {
 		return (User) session.getAttribute("user");
 	}
 
-	@RequestMapping("/test")
-	public String test(Model model, HttpSession session) {
-		return "test";
-	}
-
 }

@@ -31,11 +31,11 @@ public class User implements Serializable {
 	/** 2公众号 */
 	private String openid;
 	private String nickname;// 昵称
-	private String sex;// 性别
+	private String sex;// 性别值为1时是男性，值为2时是女性，值为0时是未知
 	private String language;// 语言
-	private String city;
-	private String province;
-	private String country;
+	private String city;// 城市
+	private String province;// 省份
+	private String country;// 国家，如中国为CN
 	private String headimgurl;// 头像
 	private String subscribe_time;
 	private String userInfoStr;

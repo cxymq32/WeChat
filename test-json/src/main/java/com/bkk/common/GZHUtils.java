@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
 
-import net.sf.ehcache.CacheManager;
 import net.sf.json.JSONObject;
 
 public class GZHUtils {
@@ -19,10 +18,14 @@ public class GZHUtils {
 	public static String CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
 	// 获取access_token的接口地址（GET） 限200（次/天）
 	public static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=SECRET";
+	// 获取openid
+	public static String openid_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code ";
 
 	public static void main(String[] args) {
+		System.out.println(getUserOpenId("123"));
 	}
 
+	/** 给用户发消息,用户下单后给公众号发消息 */
 	public static String sendMsg(String jsonContent) {
 		String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + getAccessToken();
 		return PayUtils.postParams(url, jsonContent);
@@ -48,6 +51,15 @@ public class GZHUtils {
 		return jsonObject;
 	}
 
+	/** 微信网页授权snsapi_base,snsapi_userinfo */
+	public static String getUserOpenId(String code) {
+		String appid = PropertiesUtil.getProperties("my.properties", "g_appid");
+		String secret = PropertiesUtil.getProperties("my.properties", "g_appSecret");
+		String url = openid_url.replace("APPID", appid).replace("SECRET", secret).replace("CODE", code);
+		log.info("getUserOpenId====url=========>>" + url);
+		return PayUtils.postParams(url, "");
+	}
+
 	/** 获取access_token */
 	public static String getAccessToken() {
 		String token = RedisUtil.get("token");
@@ -64,7 +76,7 @@ public class GZHUtils {
 			JSONObject json = JSONObject.fromObject(access_token_json);
 			String access_token = (String) json.get("access_token");
 			log.info("access_token===>" + access_token);
-			RedisUtil.set("token", access_token, 7000);// 7000秒过期
+			RedisUtil.set("token", access_token, 7000);// 设置7000秒过期,微信服务器是7200秒过期
 			return access_token;
 		}
 	}

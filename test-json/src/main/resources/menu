@@ -1,9 +1,9 @@
 {
 	"button":[
 	{
-	  "type":"click",
+	  "type":"view",
 	  "name":"查看预约",
-	  "key":"key1"
+	  "url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb90a701330e3bab8&redirect_uri=123.207.175.166%2ftest-json%2fcentercontroller%2ftest&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect"
 	},
 	{
 	   "name":"菜单",
@@ -11,7 +11,7 @@
 	   {
 		   "type":"view",
 		   "name":"绑定商家",
-		   "url":"http://140.143.158.187/test-json/centercontroller/test"
+		   "url":"http://140.143.158.187/test-json/centercontroller/testJS"
 		},
 		{
 		   "type":"view",

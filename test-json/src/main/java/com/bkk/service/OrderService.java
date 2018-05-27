@@ -23,4 +23,13 @@ public class OrderService extends BaseService {
 		return (List<Order>) getHibernateTemplate().findByCriteria(criteria, start, page.getPageSize());
 	}
 
+	public List<Order> getByShopId(Long shopId) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Order.class);
+		if (shopId != null) {
+			criteria.add(Restrictions.eq("shopId", shopId));
+		}
+		criteria.addOrder(org.hibernate.criterion.Order.desc("id"));
+		return (List<Order>) getHibernateTemplate().findByCriteria(criteria);
+	}
+
 }

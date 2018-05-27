@@ -4,7 +4,8 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}/admin"/>
 
 <!-- Jquery -->
-<script src="${src}/resources/jquery-3.3.1/jquery-3.3.1.min.js" type="text/javascript"></script>	
+<script src="${src}/resources/jquery-3.3.1/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript"></script>	
 
 
 <!-- CSS -->
