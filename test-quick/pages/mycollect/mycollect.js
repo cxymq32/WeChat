@@ -63,6 +63,31 @@ Page({
   onShareAppMessage: function () {
 
   },
+  showImage:function(){
+    wx.previewImage({
+      current: '', // 当前显示图片的http链接
+      urls: ['https://test-1256652767.cos.ap-chengdu.myqcloud.com/2pcode.jpg'] // 需要预览的图片http链接列表
+    })
+  },
+  getImage:function(){
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        console.log(res)
+        var tempFilePaths = res.tempFilePaths
+      }
+    })
+  },
+  getInvoice:function(e){
+    wx.chooseInvoiceTitle({
+      success(res) {
+        console.log(res)
+      }
+    })
+  },
   getPhoneNumber: function (e) {
     console.log(e.detail.errMsg)
     console.log(e.detail.iv)

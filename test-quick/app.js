@@ -2,7 +2,7 @@
 App({
   data: {
     // servsers: "https://127.0.0.1:8443/test-json/wx",
-    servsers: "https://www.coconet.net.cn/test-json/wx",
+    servsers: "https://123.207.175.166/test-json/wx",
     // servsers: "https://www.coconet.net.cn:8443/test-json/wx"
   },
   onLaunch: function () {

@@ -4,15 +4,18 @@
   font-size: 20px;
   font-weight:bold;
 }
-.function{
-  font-size: 15px;
+.center{
+  text-align: center;
 }
-.content{
-  font-size: 13px;
-  color: #CCC;
-
-  color: #CCC;
+.function{
+ font-size: 30px;
+ text-align: center;
+ color: red;
+ padding: 20px;
 }
 .contact{
+ padding: 20px;
+}
+.image{
   text-align: center;
 }

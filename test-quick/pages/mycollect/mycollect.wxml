@@ -4,3 +4,6 @@
   </view>
 <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取手机号</button>
 <button bindtap='pay'>支付</button>
+<button bindtap='getInvoice'>选择用户的发票抬头</button>
+<button bindtap='getImage'>选择图片</button>
+<button bindtap='showImage'>展示图片</button>

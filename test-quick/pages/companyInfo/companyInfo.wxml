@@ -2,13 +2,12 @@
 可可网络信息技术中心
 </view>
 <view class='function'>
-  <text>什么是小程序？\n</text>
-  <text class='content' decode='true'>&emsp;一句话总结：小程序是从微信中打开的APP，无需安装，用完即走。\n</text>
-
-  <text>我们是做什么的？\n</text>
-  <text class='content' decode='true'>&emsp;私人订制小程序、公众号、系统，用程序满足您的一切需求。</text>
+  <view>免费，免费，免费</view>
 </view>
-
+<view class='center'>重要的事情说三遍！</view>
 <view class='contact'>
 <text>QQ:584066697\n 电话:17346559443\n 地址：黄河一路渤海七路宏达建筑公司402</text> 
+</view>
+<view class='image'>
+<image bindtap='showImage' src='https://test-1256652767.cos.ap-chengdu.myqcloud.com/2pcode.jpg' mode='widthFix'></image>
 </view>

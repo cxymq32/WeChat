@@ -1,10 +1,10 @@
 {
   "pages":[
+    "pages/mycollect/mycollect",
     "pages/index/index",
     "pages/myorder/myorder",
     "pages/food/food",
     "pages/shopdetail/shopdetail",
-    "pages/mycollect/mycollect",
     "pages/my/my",
     "pages/companyInfo/companyInfo",
     "pages/feedback/feedback"
