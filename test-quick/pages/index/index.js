@@ -28,6 +28,7 @@ Page({
         });
       },
       fail: function (res) {
+        console.log(res)
         console.log(app.data.servsers + '/getShopByPage')
       }
     })
@@ -73,7 +74,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.getIndexData();
+    
   },
 
   /**

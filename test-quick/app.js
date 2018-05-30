@@ -2,12 +2,12 @@
 App({
   data: {
     // servsers: "https://127.0.0.1:8443/test-json/wx",
-    servsers: "https://123.207.175.166/test-json/wx",
-    // servsers: "https://www.coconet.net.cn:8443/test-json/wx"
+    // servsers: "https://123.207.175.166/test-json/wx",
+    servsers: "https://xcx.coconet.net.cn/test-json/wx"
   },
   onLaunch: function () {
     var opid = wx.getStorageSync('openid');
-    console.log(opid);    
+    console.log(opid);
     if (!opid){
       this.getUserInfo();
     }
@@ -38,6 +38,9 @@ App({
           wx.getUserInfo({
             success: function (res) {
               wx.setStorageSync('userInfo', res.userInfo);
+            },
+            fail:function(res){
+              console.log(res)
             }
           })
         },

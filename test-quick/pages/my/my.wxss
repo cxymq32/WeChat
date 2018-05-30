@@ -9,8 +9,13 @@
   background:#39c3f2;
 }
 .userName{
-  color: #FFF;
+  border:1px solid #FFF;
 }
+button[plain]{
+  border:0;
+  display: inline-flex;
+  color: #FFF;
+} 
 .userinfo-avatar {
   width: 128rpx;
   height: 128rpx;

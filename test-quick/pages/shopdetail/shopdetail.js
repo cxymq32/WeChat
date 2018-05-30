@@ -162,6 +162,16 @@ Page({
        duration: 2000
       })
       return false;
+    }else{
+      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+      if (!myreg.test(this.data.phone)) {
+        wx.showToast({
+          title: '请填写正确的手机号码',
+          icon: "none",
+          duration: 2000
+        })
+        return false;
+      }
     }
     var date = this.data.day + this.data.hour + "时" + this.data.minute;
     var people = this.data.people;

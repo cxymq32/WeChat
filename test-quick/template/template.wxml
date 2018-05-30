@@ -1,0 +1,3 @@
+<template name="test">
+<view>test1</view>
+</template>

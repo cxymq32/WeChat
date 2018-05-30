@@ -1,11 +1,11 @@
 {
   "pages":[
-    "pages/mycollect/mycollect",
     "pages/index/index",
+    "pages/my/my",
+    "pages/mycollect/mycollect",
     "pages/myorder/myorder",
     "pages/food/food",
     "pages/shopdetail/shopdetail",
-    "pages/my/my",
     "pages/companyInfo/companyInfo",
     "pages/feedback/feedback"
   ],

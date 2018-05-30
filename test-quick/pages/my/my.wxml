@@ -1,6 +1,6 @@
 <view bindtap="bindViewTap" class="userinfo">
       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}"/>
-      <text class='userName' >{{userInfo.nickName}}</text>
+      <button class='userName' plain='true' open-type="getUserInfo" bindgetuserinfo="getUserInfo" bindtap="confirm" >{{userInfo.nickName}}</button>
 </view>
 
 <view class='menu'>

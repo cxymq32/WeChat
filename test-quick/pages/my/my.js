@@ -37,19 +37,24 @@ Page({
         that.setData({
           userInfo: res.userInfo
         })
+        console.log(wx.getStorageSync("openid"))
+        wx.request({
+          url: app.data.servsers +"/markNewUser",
+          data: {
+            userInfo: JSON.stringify(res.userInfo),
+            openid:wx.getStorageSync("openid")
+          },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+          },
+          success: function (res) {
+            console.log(res.data)
+          }
+        })
       }
     })
   },
   onLoad: function () {
-    console.log("onload")
-    var that = this;
-    wx.getUserInfo({
-      success: function (res) {
-        console.log(res)
-        that.setData({
-          userInfo: res.userInfo
-        })
-      }
-    })
   }
 })
