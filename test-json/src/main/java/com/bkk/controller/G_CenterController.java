@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.alibaba.fastjson.JSON;
-import com.bkk.common.GZHUtils;
 import com.bkk.common.G_MessageUtil;
-import com.bkk.common.PayUtils;
-import com.bkk.common.PropertiesUtil;
-import com.bkk.common.SHA1;
+import com.bkk.common.UtilsGZH;
+import com.bkk.common.base.MyHTTP;
+import com.bkk.common.base.MyProperties;
+import com.bkk.common.base.MyString;
+import com.bkk.common.base.MyXML;
+import com.bkk.common.base.SHA1;
 import com.bkk.common.msg.TextMessage;
 import com.bkk.domain.Order;
 import com.bkk.domain.User;
@@ -43,14 +45,16 @@ public class G_CenterController extends BaseController {
 	/** 公众号网页开发 */
 	@RequestMapping("/testJS")
 	public String testJS(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String appid = PropertiesUtil.getProperties("my.properties", "g_appid");
+		String appid = MyProperties.getProperties("my.properties", "g_appid");
 		long timestamp = new Date().getTime();
 		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");// 32位随机数
 
-		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + GZHUtils.getAccessToken()
+		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + UtilsGZH.getAccessToken()
 				+ "&type=jsapi";
-		com.alibaba.fastjson.JSONObject json = JSON.parseObject(PayUtils.postParams(url, ""));
+		com.alibaba.fastjson.JSONObject json = JSON.parseObject(MyHTTP.postParams(url, ""));
+		log.info("json===========>" + json);
 		String ticket = (String) json.get("ticket");
+		log.info("ticket===========>" + ticket);
 
 		// 生成signature
 		List<String> nameList = new ArrayList<String>();
@@ -61,7 +65,7 @@ public class G_CenterController extends BaseController {
 		Map<String, Object> valueMap = new HashMap<String, Object>();
 		valueMap.put("noncestr", nonceStr);
 		valueMap.put("timestamp", timestamp);
-		valueMap.put("url", "http://140.143.158.187/test-json/centercontroller/testJS");
+		valueMap.put("url", "http://gzh.coconet.net.cn/test-json/centercontroller/testJS");
 		valueMap.put("jsapi_ticket", ticket);
 		Collections.sort(nameList);
 		String origin = "";
@@ -69,7 +73,9 @@ public class G_CenterController extends BaseController {
 			origin += nameList.get(i) + "=" + valueMap.get(nameList.get(i)).toString() + "&";
 		}
 		origin = origin.substring(0, origin.length() - 1);
+		log.info("origin=============>" + origin);
 		String signature = SHA1.encode(origin).toLowerCase();
+		log.info("signature=============>" + signature);
 
 		model.addAttribute("appId", appid);
 		model.addAttribute("timestamp", timestamp);
@@ -79,25 +85,55 @@ public class G_CenterController extends BaseController {
 	}
 
 	/** 预约列表 */
-	@RequestMapping("/test")
-	public String test(Model model, String code, String state, HttpSession session) {
-		log.info("===>>WX回调带回code");
-		log.info(code + "============##########=============" + state);
-		String openid = GZHUtils.getUserOpenId(code);
+	@RequestMapping("/orderList")
+	public String orderList(Model model, String code, String state, HttpSession session) {
+		log.info("===>>WX回调带回code=" + code + "\t state=" + state);
+		String openid = (String) session.getAttribute("openid");
 		log.info("openid=======>>" + openid);
+		if (MyString.isNotEmpty(openid)) {// 不是微信底部跳转，页面刷新时
+			User u = userService.findByOpenid(openid);
+			log.info("findUser===shopid===>>" + u.getShopId());
+			List<Order> listOrder = orderService.getByShopId(u.getShopId());
+			log.info("listSize===>>" + listOrder.size());
+			model.addAttribute("listOrder", listOrder);
+		} else if (MyString.isNotEmpty(code)) {// 微信底部跳转回调链接
+			String json = UtilsGZH.getUserOpenId(code);
+			com.alibaba.fastjson.JSONObject jsonObejct = JSON.parseObject(json);
+			openid = (String) jsonObejct.get("openid");
+			if (MyString.isNotEmpty(openid)) {
+				session.setAttribute("openid", openid);
+				User u = userService.findByOpenid(openid);
+				log.info("findUser===shopid===>>" + u.getShopId());
+				List<Order> listOrder = orderService.getByShopId(u.getShopId());
+				log.info("listSize===>>" + listOrder.size());
+				model.addAttribute("listOrder", listOrder);
+			}
+		}
+		return "gzh/orderList";
+	}
+
+	/** 操作预约列表 */
+	@RequestMapping("/operateOrder")
+	public String operateOrder(Model model, long id, String state, HttpSession session) {
+		Order order = orderService.findById(Order.class, id);
+		order.setRemark("222");
+		orderService.update(order);
+		String openid = (String) session.getAttribute("openid");
+		log.info("openid ====>" + openid);
 		User u = userService.findByOpenid(openid);
 		log.info("findUser===shopid===>>" + u.getShopId());
 		List<Order> listOrder = orderService.getByShopId(u.getShopId());
 		log.info("listSize===>>" + listOrder.size());
 		model.addAttribute("listOrder", listOrder);
-		return "gzh/test";
+		return "gzh/orderList";
 	}
 
+	/** 创建菜单?code=wxb90a701330e3bab8 */
 	@RequestMapping("/createMenu")
 	public void createMenu(Model model, String code, HttpSession session) throws Exception {
-		if (code.equals(PropertiesUtil.getProperties("my.properties", "g_appid"))) {
+		if (code.equals(MyProperties.getProperties("my.properties", "g_appid"))) {
 			log.info("#############Menu Initialize###############");
-			GZHUtils.createMenu();
+			UtilsGZH.createMenu();
 			log.info("#############Menu Initialize END###############");
 		}
 	}
@@ -108,7 +144,7 @@ public class G_CenterController extends BaseController {
 			throws Exception {
 		log.info("收到微信get验证: signature" + signature + "\ttimestamp:" + timestamp + "\tnonce:" + nonce + "\techostr:"
 				+ echostr);
-		if (GZHUtils.checkSignature(signature, timestamp, nonce)) {
+		if (UtilsGZH.checkSignature(signature, timestamp, nonce)) {
 			log.info("check success!");
 			response.getOutputStream().print(echostr);
 		}
@@ -128,9 +164,10 @@ public class G_CenterController extends BaseController {
 		String respContent = "请求处理异常，请稍后尝试！";
 		try {
 			// xml请求解析
-			Map<String, String> requestMap = G_MessageUtil.pareXml(request);
+			Map<String, String> requestMap = MyXML.pareXml(request.getInputStream());
 			JSONObject jsonObject = JSONObject.fromObject(requestMap);
 			log.info("xml请求解析====>>>" + jsonObject.toString());
+			UtilsGZH.reciveMsg(jsonObject.toString());// 追加到msg/msg.txt
 			// 发送方账号（open_id）
 			String fromUserName = requestMap.get("FromUserName");
 			// 公众账号
@@ -159,9 +196,24 @@ public class G_CenterController extends BaseController {
 				textMessage.setFromUserName(toUserName);
 				textMessage.setCreateTime(new Date().getTime());
 				textMessage.setMsgType(G_MessageUtil.MESSSAGE_TYPE_TEXT);
+				String content = requestMap.get("Content");
 				respContent = "你发的消息是：" + requestMap.get("Content");
 				textMessage.setContent(respContent);
 				respMessage = G_MessageUtil.textMessageToXml(textMessage);
+				respMessage = respMessage.replaceAll("content", "Content");
+			}
+			// link
+			else if (msgType.equals(G_MessageUtil.MESSSAGE_TYPE_LINK)) {
+				respMessage = "<xml><ToUserName>< ![CDATA[toUser] ]></ToUserName><FromUserName>< ![CDATA[fromUser] ]></FromUserName><CreateTime>12345678</CreateTime><MsgType>< ![CDATA[news] ]></MsgType><ArticleCount>#</ArticleCount><Articles><item><Title>< ![CDATA[title] ]></Title><Description>< ![CDATA[description] ]></Description><PicUrl>< ![CDATA[picurl] ]></PicUrl><Url>< ![CDATA[url] ]></Url></item></Articles></xml>";
+				respMessage = respMessage.replace("[toUser]", "[" + fromUserName + "]");
+				respMessage = respMessage.replace("[fromUser]", "[" + toUserName + "]");
+				respMessage = respMessage.replace("12345678", new Date().getTime() + "");
+				respMessage = respMessage.replace("#", 1 + "");
+				respMessage = respMessage.replace("title", "test");
+				respMessage = respMessage.replace("description", "test1");
+				respMessage = respMessage.replace("picurl",
+						"https://csdnimg.cn/release/edu/resource/images/trial_member_product.gif");
+				respMessage = respMessage.replace("url", "www.baidu.com");
 			}
 			// 事件推送
 			else if (msgType.equals(G_MessageUtil.MESSSAGE_TYPE_EVENT)) {
@@ -170,7 +222,7 @@ public class G_CenterController extends BaseController {
 				// 订阅
 				if (eventType.equals(G_MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
 					User user = userService.findByOpenid(fromUserName);
-					com.alibaba.fastjson.JSONObject userJson = GZHUtils.getUserInfo(fromUserName);
+					com.alibaba.fastjson.JSONObject userJson = UtilsGZH.getUserInfo(fromUserName);
 					if (user == null) {
 						userService.saveJsonUser(userJson);
 					} else {
@@ -189,7 +241,7 @@ public class G_CenterController extends BaseController {
 					log.info("自定义菜单消息处理");
 					String eventKey = requestMap.get("EventKey");
 					if (eventKey.equals("key1")) {
-						log.info("自定义菜单消息处理====>" + GZHUtils.getAccessToken());
+						log.info("自定义菜单消息处理====>" + UtilsGZH.getAccessToken());
 					} else if (eventKey.equals("key2")) {
 						log.info("自定义菜单消息处理2");
 					}
@@ -199,7 +251,6 @@ public class G_CenterController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		respMessage = respMessage.replaceAll("content", "Content");
 		log.info("respMessage====>>" + respMessage);
 		// 响应消息
 		response.getWriter().print(respMessage);

@@ -1,4 +1,4 @@
-package com.bkk.common;
+package com.bkk.common.base;
 
 import java.security.MessageDigest;
 

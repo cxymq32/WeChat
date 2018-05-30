@@ -1,6 +1,6 @@
-package com.bkk.common;
+package com.bkk.common.base;
 
-public class Page {
+public class MyPage {
 	/** 当前页 */
 	private int page;
 	/** 每页显示的条数 */
@@ -11,7 +11,7 @@ public class Page {
 	private String order;
 	// ============================
 
-	public Page() {
+	public MyPage() {
 		super();
 		this.page = 1;
 		this.pageSize = 10;

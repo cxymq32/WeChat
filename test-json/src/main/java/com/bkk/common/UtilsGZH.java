@@ -2,40 +2,65 @@ package com.bkk.common;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
+import com.bkk.common.base.MyHTTP;
+import com.bkk.common.base.MyProperties;
+import com.bkk.common.base.MyRedis;
 
 import net.sf.json.JSONObject;
 
-public class GZHUtils {
-	private static final Logger log = Logger.getLogger(GZHUtils.class);
+public class UtilsGZH {
+	private static final Logger log = Logger.getLogger(UtilsGZH.class);
 	// 菜单创建（POST） 限100（次/天）
-	public static String CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+	public static String create_menu_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}";
 	// 获取access_token的接口地址（GET） 限200（次/天）
-	public static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=SECRET";
+	public static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
 	// 获取openid
-	public static String openid_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code ";
+	public static String openid_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code";
 
 	public static void main(String[] args) {
-		System.out.println(getUserOpenId("123"));
 	}
 
-	/** 给用户发消息,用户下单后给公众号发消息 */
+	/** 用户发给公众号的消息-保存为josn文本格式 */
+	public static void reciveMsg(String jsonContent) throws Exception {
+		FileWriter fw = null;
+		String path = MyProperties.getProperties("my.properties", "g_msgFile");
+		// 如果文件存在，则追加内容；如果文件不存在，则创建文件
+		File p = new File(path);
+		if (!p.exists()) {
+			p.mkdirs();
+		}
+		File f = new File(path + "msg.txt");
+		fw = new FileWriter(f, true);
+		PrintWriter pw = new PrintWriter(fw);
+		pw.println(jsonContent);
+		pw.flush();
+		fw.flush();
+		pw.close();
+		fw.close();
+	}
+
+	/** 用户下单后通过公众号号给商户发消息 */
 	public static String sendMsg(String jsonContent) {
 		String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + getAccessToken();
-		return PayUtils.postParams(url, jsonContent);
+		return MyHTTP.postParams(url, jsonContent);
 	}
 
 	/** 获取用户信息,参数openid返回json对象 */
 	public static com.alibaba.fastjson.JSONObject getUserInfo(String openid) throws Exception {
 		String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + getAccessToken() + "&openid="
 				+ openid;
-		String userInfo = PayUtils.postParams(url, "");
+		String userInfo = MyHTTP.postParams(url, "");
 		log.info("userInfo=======>>" + userInfo);
 		com.alibaba.fastjson.JSONObject userInfoJson = JSON.parseObject(userInfo);
 		return userInfoJson;
@@ -45,45 +70,44 @@ public class GZHUtils {
 	/** 创建菜单 */
 	public static String createMenu() throws Exception {
 		String access_token = getAccessToken();
-		String url = CREATE_MENU_URL.replace("ACCESS_TOKEN", access_token);
-		String jsonObject = PayUtils.postParams(url, readFile("menu"));
+		String url = MessageFormat.format(create_menu_url, access_token);
+		String jsonObject = MyHTTP.postParams(url, readFile("menu"));
 		log.info("jsonObject====>>" + jsonObject);
 		return jsonObject;
 	}
 
 	/** 微信网页授权snsapi_base,snsapi_userinfo */
 	public static String getUserOpenId(String code) {
-		String appid = PropertiesUtil.getProperties("my.properties", "g_appid");
-		String secret = PropertiesUtil.getProperties("my.properties", "g_appSecret");
-		String url = openid_url.replace("APPID", appid).replace("SECRET", secret).replace("CODE", code);
+		String appid = MyProperties.getProperties("my.properties", "g_appid");
+		String secret = MyProperties.getProperties("my.properties", "g_appSecret");
+		String url = MessageFormat.format(openid_url, appid, secret, code);
 		log.info("getUserOpenId====url=========>>" + url);
-		return PayUtils.postParams(url, "");
+		return MyHTTP.postParams(url, "");
 	}
 
 	/** 获取access_token */
 	public static String getAccessToken() {
-		String token = RedisUtil.get("token");
+		String token = MyRedis.get("token");
 		if (token != null) {
 			log.info("redisCcache===>>" + token);
 			return token;
 		} else {
-			String appid = PropertiesUtil.getProperties("my.properties", "g_appid");
-			String secret = PropertiesUtil.getProperties("my.properties", "g_appSecret");
-			access_token_url = access_token_url.replace("APPID", appid).replace("SECRET", secret);
-			log.info("access_token_url===>>" + access_token_url);
-
-			String access_token_json = PayUtils.postParams(access_token_url, "");
+			String appid = MyProperties.getProperties("my.properties", "g_appid");
+			String secret = MyProperties.getProperties("my.properties", "g_appSecret");
+			String url = MessageFormat.format(access_token_url, appid, secret);
+			log.info("access_token_url===>>" + url);
+			String access_token_json = MyHTTP.postParams(url, "");
 			JSONObject json = JSONObject.fromObject(access_token_json);
 			String access_token = (String) json.get("access_token");
 			log.info("access_token===>" + access_token);
-			RedisUtil.set("token", access_token, 7000);// 设置7000秒过期,微信服务器是7200秒过期
+			MyRedis.set("token", access_token, 7000);// 设置7000秒过期,微信服务器是7200秒过期
 			return access_token;
 		}
 	}
 
 	/** 读取文件 */
 	public static String readFile(String fileName) throws Exception {
-		PropertiesUtil temp = new PropertiesUtil();
+		MyProperties temp = new MyProperties();
 		String propertiesDir = temp.getClass().getClassLoader().getResource("").getPath() + fileName;
 		String encoding = "UTF-8";
 		File file = new File(propertiesDir);
@@ -96,8 +120,8 @@ public class GZHUtils {
 	}
 
 	/** 验证签名 */
-	public static boolean checkSignature(String signature, String timestamp, String nonce) {
-		String token = PropertiesUtil.getProperties("my.properties", "token");
+	public static boolean checkSignature(String signature, String timestamp, String nonce) throws Exception {
+		String token = MyProperties.getProperties("my.properties", "g_token");
 		String[] arr = new String[] { token, timestamp, nonce };
 		// 将token、timestamp、nonce三个参数进行字典序排序
 		Arrays.sort(arr);
@@ -108,14 +132,10 @@ public class GZHUtils {
 		MessageDigest md = null;
 		String tmpStr = null;
 
-		try {
-			md = MessageDigest.getInstance("SHA-1");
-			// 将三个参数字符串拼接成一个字符串进行sha1加密
-			byte[] digest = md.digest(content.toString().getBytes());
-			tmpStr = byteToStr(digest);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+		md = MessageDigest.getInstance("SHA-1");
+		// 将三个参数字符串拼接成一个字符串进行sha1加密
+		byte[] digest = md.digest(content.toString().getBytes());
+		tmpStr = byteToStr(digest);
 
 		content = null;
 		// 将sha1加密后的字符串可与signature对比，标识该请求来源于微信

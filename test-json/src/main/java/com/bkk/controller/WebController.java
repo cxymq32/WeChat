@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bkk.common.WebUtils;
+import com.bkk.common.UtilsWeb;
 import com.bkk.domain.Shop;
 import com.bkk.domain.User;
 

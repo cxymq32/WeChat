@@ -8,12 +8,12 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 
-import com.bkk.common.Page;
+import com.bkk.common.base.MyPage;
 import com.bkk.domain.Shop;
 
 @Service
 public class ShopService extends BaseService {
-	public List<Shop> getByPage(Page page, Shop shop) {
+	public List<Shop> getByPage(MyPage page, Shop shop) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Shop.class);
 		if (shop != null) {
 			if (shop.getShopName() != null)

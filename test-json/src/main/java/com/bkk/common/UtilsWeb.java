@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class WebUtils {
+public class UtilsWeb {
 	public static String saveFile(MultipartFile file, String path) {
 		// 判断文件是否为空
 		if (!file.isEmpty()) {

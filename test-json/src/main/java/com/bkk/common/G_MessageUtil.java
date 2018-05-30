@@ -81,43 +81,6 @@ public class G_MessageUtil {
 	public static final String EVENT_TYPE_CLICK = "CLICK";
 
 	/**
-	 * 解析微信发来的请求 XML
-	 */
-	@SuppressWarnings("unchecked")
-	public static Map<String, String> pareXml(HttpServletRequest request) throws Exception {
-
-		// 将解析的结果存储在HashMap中
-		Map<String, String> reqMap = new HashMap<String, String>();
-
-		// 从request中取得输入流
-		InputStream inputStream = request.getInputStream();
-//		byte b[] = new byte[1024];   
-//        int len = 0;   
-//        int temp=0;          //所有读取的内容都使用temp接收   
-//        while((temp=inputStream.read())!=-1){    //当没有读取完时，继续读取   
-//            b[len]=(byte)temp;   
-//            len++;   
-//        }   
-//		log.info("content=====>>"+new String(b,0,len));
-		// 读取输入流
-		SAXReader reader = new SAXReader();
-		Document document = reader.read(inputStream);
-		// 得到xml根元素
-		Element root = document.getRootElement();
-		// 得到根元素的所有子节点
-		List<Element> elementList = root.elements();
-		// 遍历所有的子节点取得信息类容
-		for (Element elem : elementList) {
-			reqMap.put(elem.getName(), elem.getText());
-		}
-		// 释放资源
-		inputStream.close();
-		inputStream = null;
-
-		return reqMap;
-	}
-
-	/**
 	 * 响应消息转换成xml返回 文本对象转换成xml
 	 */
 	public static String textMessageToXml(TextMessage textMessage) {

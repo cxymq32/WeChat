@@ -1,4 +1,6 @@
-package com.bkk.common;
+package com.bkk.common.base;
+
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +10,14 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 @Component
-public class RedisUtil {
-	protected final static Logger logger = Logger.getLogger(RedisUtil.class);
+public class MyRedis {
+	protected final static Logger logger = Logger.getLogger(MyRedis.class);
 
 	private static JedisPool jedisPool;
 
 	@Autowired(required = true)
 	public void setJedisPool(JedisPool jedisPool) {
-		logger.info("************************************************************");
-		RedisUtil.jedisPool = jedisPool;
+		MyRedis.jedisPool = jedisPool;
 	}
 
 	/**
@@ -121,6 +122,24 @@ public class RedisUtil {
 			jedisPool.returnResource(jedis);
 		}
 		return result;
+	}
+
+	/**
+	 * 获取所有key
+	 */
+	public static Set<String> getAllKeys() {
+		Jedis jedis = null;
+		Set<String> set = null;
+		try {
+			jedis = jedisPool.getResource();
+			set = jedis.keys("*");
+			logger.debug("set.size() =" + set.size());
+		} catch (Exception e) {
+			logger.warn("set.size() =" + set.size());
+		} finally {
+			jedisPool.returnResource(jedis);
+		}
+		return set;
 	}
 
 }

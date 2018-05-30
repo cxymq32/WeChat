@@ -1,8 +1,10 @@
 package com.bkk.common;
 
 public class Model_Pay {
+	// 接收的数据
 	private String openid;
 	private String total_fee = "1";// 付款金额 0 分
+	// 返回的数据
 	private String finalsign;
 	private String timestamp;
 	private String packages;

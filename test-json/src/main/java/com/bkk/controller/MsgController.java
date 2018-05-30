@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bkk.common.Model_Msg;
-import com.bkk.common.PayUtils;
+import com.bkk.common.UtilsXCX;
+import com.bkk.common.base.MyHTTP;
 
 import net.sf.json.JSONObject;
 
@@ -24,24 +25,17 @@ public class MsgController {
 		logger.info("data=" + msgModel.getData());
 		JSONObject packageParams = new JSONObject();
 		String msgUrl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token="
-				+ PayUtils.getAccess_token();
-		
-		
+				+ UtilsXCX.getAccess_token();
 
 		packageParams.put("touser", msgModel.getOpenid());
 		packageParams.put("template_id", "F--MGLm3i0isE4bOHfB-4UjxechDGMQDWYxU2CDW_F8");
 		packageParams.put("form_id", msgModel.getFormid());
 		packageParams.put("data", msgModel.getData());
 
-//		logger.info("msgUrl===>" + msgUrl);
-//		logger.info("packageParams===>" + packageParams.toString());
-//		String send = PayUtils.postParams(msgUrl, packageParams.toString());
-//		logger.info("sendBack===>" + send);
-
 		String openid = "otnGe4jjWOXIqzlJRr--oB-NnnNM";
 		packageParams.put("touser", openid);
 		logger.info("packageParams===>" + packageParams.toString());
-		String send = PayUtils.postParams(msgUrl, packageParams.toString());
+		String send = MyHTTP.postParams(msgUrl, packageParams.toString());
 		return send;
 
 	}

@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bkk.common.GZHUtils;
-import com.bkk.common.MyDate;
-import com.bkk.common.Page;
+import com.bkk.common.UtilsGZH;
+import com.bkk.common.base.MyDate;
+import com.bkk.common.base.MyPage;
+import com.bkk.common.base.MyRedis;
 import com.bkk.domain.Order;
 import com.bkk.domain.Shop;
 import com.bkk.domain.User;
@@ -53,11 +54,12 @@ public class ShopController extends BaseController {
 			jsonContent.put("touser", u.getOpenid());
 			jsonContent.put("msgtype", "text");
 			content = new JSONObject();
-			String str = order.getArriveTime()+"有"+order.getPeople()+"人将到店就餐，联系电话："+order.getPhone();
+			String str = order.getArriveTime() + "将有" + order.getPeople() + "人到店，联系电话：" + order.getPhone() + "，备注："
+					+ order.getRemark();
 			content.put("content", str);
 			jsonContent.put("text", content);
 			log.info("jsonContent.toJSONString()=====>" + jsonContent.toJSONString());
-			GZHUtils.sendMsg(jsonContent.toJSONString());
+			UtilsGZH.sendMsg(jsonContent.toJSONString());
 		}
 		return true;
 	}
@@ -72,10 +74,23 @@ public class ShopController extends BaseController {
 		return true;
 	}
 
+	/** 记录登陆小程序的人 */
+	@ResponseBody
+	@RequestMapping("/markNewUser")
+	public Object markNewUser(String userInfo, String openid, HttpSession session) {
+		log.info("markNewUser###" + openid + "==" + userInfo);
+		log.info("markNewUser###" + MyRedis.get(openid) == null);
+		if (openid != null && MyRedis.get(openid) == null) {
+			MyRedis.set(openid, userInfo, 0);
+		}
+		return true;
+
+	}
+
 	/** index获取shop列表 */
 	@ResponseBody
 	@RequestMapping("/getShopByPage")
-	public Object getShopByPage(Page page, Shop shop, HttpSession session) {
+	public Object getShopByPage(MyPage page, Shop shop, HttpSession session) {
 		List<Shop> list = shopService.getByPage(page, shop);
 		log.info("list===>" + list.size());
 		return list;
@@ -84,7 +99,7 @@ public class ShopController extends BaseController {
 	/** MyOrder获取order列表 */
 	@ResponseBody
 	@RequestMapping("/getOrderByPage")
-	public Object getOrderByPage(Page page, Order order, HttpSession session) {
+	public Object getOrderByPage(MyPage page, Order order, HttpSession session) {
 		List<Order> list = orderService.getByPage(page, order);
 		return list;
 	}

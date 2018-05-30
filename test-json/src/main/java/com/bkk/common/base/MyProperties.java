@@ -1,4 +1,4 @@
-package com.bkk.common;
+package com.bkk.common.base;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +12,7 @@ import java.util.Properties;
  * @author bkk
  * @version 2016年8月17日下午5:12:09
  */
-public class PropertiesUtil {
+public class MyProperties {
 
 	private static String param;
 
@@ -30,7 +30,7 @@ public class PropertiesUtil {
 	 * @return 参数值
 	 */
 	public static String getProperties(String propertiesName, String paramName) {
-		PropertiesUtil temp = new PropertiesUtil();
+		MyProperties temp = new MyProperties();
 		Properties prop = new Properties();
 		String propertiesDir = temp.getClass().getClassLoader().getResource("").getPath() + propertiesName;
 		try {

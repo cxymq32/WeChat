@@ -6,13 +6,13 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 
-import com.bkk.common.Page;
+import com.bkk.common.base.MyPage;
 import com.bkk.domain.Order;
 
 @Service
 public class OrderService extends BaseService {
 
-	public List<Order> getByPage(Page page, Order order) {
+	public List<Order> getByPage(MyPage page, Order order) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Order.class);
 		if (order != null) {
 			if (order.getOpenId() != null)
