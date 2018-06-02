@@ -6,7 +6,7 @@
 </view>
 <view class='center'>重要的事情说三遍！</view>
 <view class='contact'>
-<text>QQ:584066697\n 电话:17346559443\n 地址：黄河一路渤海七路宏达建筑公司402</text> 
+<text>QQ:584066697\n 电话:17346559443</text> 
 </view>
 <view class='image'>
 <image bindtap='showImage' src='https://test-1256652767.cos.ap-chengdu.myqcloud.com/2pcode.jpg' mode='widthFix'></image>

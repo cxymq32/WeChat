@@ -10,11 +10,12 @@
 }
 .userName{
   border:1px solid #FFF;
+  color: #FFF !important;
 }
 button[plain]{
   border:0;
   display: inline-flex;
-  color: #FFF;
+  color: #000;
 } 
 .userinfo-avatar {
   width: 128rpx;

@@ -15,7 +15,7 @@
 </view>
 <view class='info'>
   <view class='shopname model-buttom'>
-    {{shopName}}
+    {{shop.shopName}}
     <image class="share" src='../../image/share.png'/>
     <button class='sharebutton' plain="true" data-name="shareBtn" open-type="share">发送给朋友</button>
   </view>
@@ -23,7 +23,7 @@
 
   <view class='address' bindtap="goto">
     <image class="location" src='../../image/location.png'/>
-    {{adress}}
+    {{shop.adress}}
     <text class='navigation' >导航</text>
   </view>
 
@@ -81,7 +81,7 @@
 
 <view class='sale model-buttom' style='display:{{hideOther}}'>
   <text class='sale_title'>店内优惠\n</text>
-  <text>{{sale}}</text>
+  <text>{{shop.sale}}</text>
 </view>
 
 

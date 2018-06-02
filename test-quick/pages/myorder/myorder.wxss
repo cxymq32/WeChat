@@ -34,9 +34,8 @@ border-bottom:2px solid #CCC;
   margin-top: 2px;
   margin-left: 5px;
   padding-bottom: 5px;
-  color: #DEDEDE;
+  color: #6699ff;
 }
-
 .shopName{
   font-size: 13px;
   margin-bottom: 2px;

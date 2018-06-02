@@ -15,8 +15,7 @@ Page({
     var that = this;
     wx.request({
       url: app.data.servsers + '/getShopByPage', //仅为示例，并非真实的接口地址
-      data: {
-      },
+      data: {},
       method: 'get',
       header: {
         'content-type': 'application/json'

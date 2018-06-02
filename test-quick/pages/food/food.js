@@ -4,11 +4,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    imgUrls: ['https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526189534070&di=e2a970c4663400e618eecba21e0813f3&imgtype=0&src=http%3A%2F%2Fpic65.nipic.com%2Ffile%2F20150423%2F20249953_101217421000_2.jpg', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526189534070&di=e2a970c4663400e618eecba21e0813f3&imgtype=0&src=http%3A%2F%2Fpic65.nipic.com%2Ffile%2F20150423%2F20249953_101217421000_2.jpg', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526189534070&di=e2a970c4663400e618eecba21e0813f3&imgtype=0&src=http%3A%2F%2Fpic65.nipic.com%2Ffile%2F20150423%2F20249953_101217421000_2.jpg',],
+    imgUrls: [],
   },
   //预览图片
   previewImg: function (e) {
-    console.log(e.currentTarget.dataset.index);
     var index = e.currentTarget.dataset.index;
     var imgArr = this.data.imgUrls;
     wx.previewImage({
@@ -24,20 +23,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      imgUrls: options.imgUrls.split(",")
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function (e) {
 
   },
 

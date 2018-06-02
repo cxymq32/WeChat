@@ -54,13 +54,10 @@ Page({
     people:1,
     phone:"",
     remark:"",
-    shopId:0,
-    shopName:"",
-    adress:"",
     shopPhone:"",
     longitude: "",
     latitude: "",
-    sale: "",
+    shop:null,
   },
   bindChange: function (e) {
     const val = e.detail.value
@@ -132,22 +129,24 @@ Page({
   //打电话
   call: function () {
     wx.makePhoneCall({
-      phoneNumber: this.data.shopPhone
+      phoneNumber: this.data.shop.phone
     })
   },
   //导航
   goto:function(){
+    console.log(this.data.shop)
     wx.openLocation({
-      latitude: this.data.latitude, 
-      longitude: this.data.longitude, 
-      name: this.data.shopName, 
+      latitude: this.data.shop.latitude, 
+      longitude: this.data.shop.longitude, 
+      name: this.data.shop.shopName, 
       scale: 29
     })
   },
   //菜单
   toMenu : function(){
+    console.log(this.data.shopId)
     wx.navigateTo({
-      url: '../../pages/food/food?shopId=2'
+      url: '../../pages/food/food?shopId=' + this.data.shopId + '&imgUrls=' + this.data.shop.menuImage
     })
   },
   //预订
@@ -227,7 +226,6 @@ Page({
     return shareObj;
   },
   getDetail: function (options){
-    console.log(options)
     var that = this;
     wx.request({
       url: getApp().data.servsers + '/getShopByPage', //仅为示例，并非真实的接口地址
@@ -241,16 +239,13 @@ Page({
       success: function (res) {
         console.log(res.data[0])
         that.data.imgUrls.push(res.data[0].mainImage)
-        that.data.imgUrls.push(res.data[0].image1)
-        that.data.imgUrls.push(res.data[0].image2)
-        that.data.imgUrls.push(res.data[0].image3)
+        var slide = res.data[0].slideImage.split(",");
+        for (var i = 0; i < slide.length;i++){
+          that.data.imgUrls.push(slide[i])
+        }
         that.setData({
-          shopName: res.data[0].shopName,
-          adress: res.data[0].adress,
-          shopPhone: res.data[0].phone,
-          latitude: res.data[0].latitude,
-          longitude: res.data[0].longitude,
-          sale: res.data[0].sale,
+          shopId: res.data[0].id,
+          shop: res.data[0],
           imgUrls: that.data.imgUrls,
         });
         wx.setNavigationBarTitle({
