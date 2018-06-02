@@ -20,7 +20,6 @@ public class BaseMessage {
 
 	public BaseMessage() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public BaseMessage(String toUserName, String fromUserName, long createTime, String msgType, String msgId) {

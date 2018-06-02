@@ -28,13 +28,15 @@ public class Order implements Serializable {
 	private String openId;
 	// 到店时间
 	private String arriveTime;
+	// 到店时间
+	private Date arriveTimeDate;
 	// 预留手机号
 	private String phone;
 	// 到店人数
 	private String people;
 	// 备注
 	private String remark;
-	// 状态 0下单1确认-1取消
+	// 状态 0下单1确认2取消
 	private int status;
 
 	// 发送给用户消息的id
@@ -51,6 +53,14 @@ public class Order implements Serializable {
 
 	public String getShopName() {
 		return shopName;
+	}
+
+	public Date getArriveTimeDate() {
+		return arriveTimeDate;
+	}
+
+	public void setArriveTimeDate(Date arriveTimeDate) {
+		this.arriveTimeDate = arriveTimeDate;
 	}
 
 	public void setShopName(String shopName) {

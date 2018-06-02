@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.alibaba.fastjson.JSON;
 import com.bkk.common.G_MessageUtil;
 import com.bkk.common.UtilsGZH;
+import com.bkk.common.UtilsXCX;
 import com.bkk.common.base.MyHTTP;
 import com.bkk.common.base.MyProperties;
 import com.bkk.common.base.MyString;
@@ -86,16 +87,14 @@ public class G_CenterController extends BaseController {
 
 	/** 预约列表 */
 	@RequestMapping("/orderList")
-	public String orderList(Model model, String code, String state, HttpSession session) {
+	public String orderList(Model model, String code, String state, HttpSession session) throws Exception {
 		log.info("===>>WX回调带回code=" + code + "\t state=" + state);
 		String openid = (String) session.getAttribute("openid");
-		log.info("openid=======>>" + openid);
+		log.info("session===openid=======>>" + openid);
+		List<Order> listOrder = null;
 		if (MyString.isNotEmpty(openid)) {// 不是微信底部跳转，页面刷新时
-			User u = userService.findByOpenid(openid);
-			log.info("findUser===shopid===>>" + u.getShopId());
-			List<Order> listOrder = orderService.getByShopId(u.getShopId());
-			log.info("listSize===>>" + listOrder.size());
-			model.addAttribute("listOrder", listOrder);
+			User u = (User) session.getAttribute("cuser");
+			listOrder = orderService.getByShopId(u.getShopId(), state);
 		} else if (MyString.isNotEmpty(code)) {// 微信底部跳转回调链接
 			String json = UtilsGZH.getUserOpenId(code);
 			com.alibaba.fastjson.JSONObject jsonObejct = JSON.parseObject(json);
@@ -103,32 +102,42 @@ public class G_CenterController extends BaseController {
 			if (MyString.isNotEmpty(openid)) {
 				session.setAttribute("openid", openid);
 				User u = userService.findByOpenid(openid);
-				log.info("findUser===shopid===>>" + u.getShopId());
-				List<Order> listOrder = orderService.getByShopId(u.getShopId());
-				log.info("listSize===>>" + listOrder.size());
-				model.addAttribute("listOrder", listOrder);
+				if (u != null) {
+					session.setAttribute("cuser", u);
+					listOrder = orderService.getByShopId(u.getShopId(), state);
+				}
 			}
 		}
+		model.addAttribute("listOrder", listOrder);
+		model.addAttribute("state", state);
 		return "gzh/orderList";
 	}
 
 	/** 操作预约列表 */
 	@RequestMapping("/operateOrder")
-	public String operateOrder(Model model, long id, String state, HttpSession session) {
+	public String operateOrder(Model model, long id, Integer state, HttpSession session) throws Exception {
 		Order order = orderService.findById(Order.class, id);
-		order.setRemark("222");
+		order.setStatus(state);
 		orderService.update(order);
-		String openid = (String) session.getAttribute("openid");
-		log.info("openid ====>" + openid);
-		User u = userService.findByOpenid(openid);
-		log.info("findUser===shopid===>>" + u.getShopId());
-		List<Order> listOrder = orderService.getByShopId(u.getShopId());
-		log.info("listSize===>>" + listOrder.size());
-		model.addAttribute("listOrder", listOrder);
-		return "gzh/orderList";
+		// 发送消息给小程序用户
+		JSONObject packageParams = new JSONObject();
+		packageParams.put("touser", order.getOpenId());
+		// FIXME 预订成功后给小程序用户发送的模版消息
+		packageParams.put("template_id", "Djsyb6FjccRPJ2uxWXcpdr8s5-K7YqSLiGvwwtSEXHY");
+		packageParams.put("form_id", order.getFormId());
+		packageParams.put("page", "pages/myorder/myorder");
+		JSONObject data = new JSONObject();
+		data.put("keyword1", "{ 'value': '" + order.getShopName() + "', 'color': '#4a4a4a' }");
+		data.put("keyword2", "{ 'value': '" + order.getOrderNum() + "', 'color': '#4a4a4a' }");
+		data.put("keyword3", "{ 'value': '" + order.getPhone() + "', 'color': '#4a4a4a' }");
+		data.put("keyword4", "{ 'value': '" + order.getRemark() + "', 'color': '#4a4a4a' }");
+		packageParams.put("data", data.toString());
+		log.info("sendToXCXUser============>>" + packageParams.toString());
+		UtilsXCX.sengMsg(packageParams.toString());
+		return "redirect:/centercontroller/orderList?state=1";
 	}
 
-	/** 创建菜单?code=wxb90a701330e3bab8 */
+	/** 创建菜单createMenu?code=wxb90a701330e3bab8 */
 	@RequestMapping("/createMenu")
 	public void createMenu(Model model, String code, HttpSession session) throws Exception {
 		if (code.equals(MyProperties.getProperties("my.properties", "g_appid"))) {

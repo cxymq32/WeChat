@@ -11,48 +11,56 @@
 
 
 </head>
-
+<style>
+.remark{
+  font-size: 10px;
+}
+</style>
 <body>
-	<a href="javascript:;" class="weui-btn weui-btn_primary">绿色按钮</a>
-	<c:forEach items="${listOrder}" var="i">
-		<c:out value="${i.phone}" />
-		<c:out value="${i.arriveTime}" />
-		<c:out value="${i.people}" />
-		<c:out value="${i.remark}" />
-		<c:out value="${i.status}" />
-		
-		---
-		${i.formId}+${i.id}+${i.openId}
-		
-		<a href="${src}/centercontroller/operateOrder?id=${i.id}">test</a>
-	</c:forEach>
-	<div class="weui-tabbar">
-        <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
-            <span style="display: inline-block;position: relative;">
-                <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
-                <span class="weui-badge" style="position: absolute;top: -2px;right: -13px;">8</span>
-            </span>
-            <p class="weui-tabbar__label">微信</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item">
-            <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
-            <p class="weui-tabbar__label">通讯录</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item">
-            <span style="display: inline-block;position: relative;">
-                <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
-                <span class="weui-badge weui-badge_dot" style="position: absolute;top: 0;right: -6px;"></span>
-            </span>
-            <p class="weui-tabbar__label">发现</p>
-        </a>
-        <a href="javascript:;" class="weui-tabbar__item">
-            <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
-            <p class="weui-tabbar__label">我</p>
-        </a>
-    </div>
-	<script>
-		
-	</script>
+<div class="weui-navbar">
+	<div id="ordering" class="weui-navbar__item">预约中 </div>
+	<div id="orderpass" class="weui-navbar__item">已过期</div>
+</div>
+<div style="text-align: center;">${listOrder[0].shopName}</div>
+<div class="weui-cells" style="margin-top: -2px">
+<c:forEach items="${listOrder}" var="i">
+	<%-- ${i.formId}+${i.id}+${i.openId}+${i.status}+${i.remark}+${i.arriveTime}+${i.phone} --%>
+<div class="weui-cell">
+	<div class="weui-cell__bd">
+		<p>${i.arriveTime} ${i.people}人，预留电话：${i.phone}</p>
+		<p class='remark'>留言：${i.remark}</p>
+	</div>
+	<div class="weui-cell__ft">
+		<c:if test="${i.status==0}">
+			<a href="${src}/centercontroller/operateOrder?id=${i.id}&state=1" class="weui-btn weui-btn_mini weui-btn_primary">接单</a>
+		</c:if>
+		<c:if test="${i.status==1}">
+			<a href="#" class="weui-btn weui-btn_mini weui-btn_default">已确认</a>
+		</c:if>
+	</div>
+</div>
+</c:forEach>
+</div>
+<script>
+$(function(){
+	var state = "${state}";
+	if(state=="2"){
+		$("#orderpass").toggleClass("weui-bar__item_on");
+	}else {
+		$("#ordering").toggleClass("weui-bar__item_on");
+	}
+})
+	$("#ordering").click( function () { 
+		$(this).toggleClass("weui-bar__item_on");
+		$("#orderpass").toggleClass("weui-bar__item_on");
+		window.location.href="${src}/centercontroller/orderList?state=1"
+	});
+	$("#orderpass").click( function () {
+		$("#ordering").toggleClass("weui-bar__item_on");
+		$(this).toggleClass("weui-bar__item_on");
+		window.location.href="${src}/centercontroller/orderList?state=2"
+	});
+</script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 package com.bkk.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,11 +28,12 @@ public class ShopController extends BaseController {
 	Logger log = Logger.getLogger(ShopController.class);
 
 	public static SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日");
+	public static SimpleDateFormat sfd = new SimpleDateFormat("yyyy年MM月dd日HH时mm分");
 
 	/** 预约下单 */
 	@ResponseBody
 	@RequestMapping("/comfirorder")
-	public boolean comfirorder(Model model, Order order, HttpSession session) {
+	public boolean comfirorder(Model model, Order order, HttpSession session) throws Exception {
 		Shop shop = shopService.findById(Shop.class, order.getShopId());
 		order.setShopName(shop.getShopName());
 		order.setShopImage(shop.getMainImage());
@@ -40,10 +42,12 @@ public class ShopController extends BaseController {
 
 		// 设置到店时间
 		String time = order.getArriveTime();
+		String date = "";
 		if (time.indexOf("今天") > -1)
-			order.setArriveTime(sf.format(new Date()) + time.substring(2) + "分");
+			date = sf.format(new Date()) + time.substring(2) + "分";
 		if (time.indexOf("明天") > -1)
-			order.setArriveTime(MyDate.getNextDay(new Date()) + time.substring(2) + "分");
+			date = MyDate.getNextDay(new Date()) + time.substring(2) + "分";
+		order.setArriveTimeDate(sfd.parse(date));
 		orderService.save(order);
 		log.info("给商户发消息。。。。");
 		List<User> listu = userService.findByShopId(order.getShopId());
