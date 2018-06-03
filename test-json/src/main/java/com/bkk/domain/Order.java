@@ -36,7 +36,7 @@ public class Order implements Serializable {
 	private String people;
 	// 备注
 	private String remark;
-	// 状态 0下单1确认2取消
+	// 状态 0下单1确认2用户取消
 	private int status;
 
 	// 发送给用户消息的id

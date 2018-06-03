@@ -10,13 +10,13 @@
 	   "sub_button":[
 	   {
 		   "type":"view",
-		   "name":"绑定商家",
-		   "url":"http://140.143.158.187/test-json/centercontroller/testJS"
+		   "name":"我的店铺",
+		   "url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb90a701330e3bab8&redirect_uri=http%3A%2F%2Fgzh.coconet.net.cn%2ftest-json%2fcentercontroller%2fmyShop&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
 		},
 		{
 		   "type":"view",
 		   "name":"联系我们",
-		   "url":"http://v.qq.com/"
+		   "url":"http://gzh.coconet.net.cn/test-json/centercontroller/test"
 		}]
 	}]
 }

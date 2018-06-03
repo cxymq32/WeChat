@@ -27,15 +27,20 @@
 	<%-- ${i.formId}+${i.id}+${i.openId}+${i.status}+${i.remark}+${i.arriveTime}+${i.phone} --%>
 <div class="weui-cell">
 	<div class="weui-cell__bd">
-		<p>${i.arriveTime} ${i.people}人，预留电话：${i.phone}</p>
+		<p>${i.arriveTime}分(<span style="color:red">${i.people}人</span>)，电话：<span style="color:blue">${i.phone}</span></p>
 		<p class='remark'>留言：${i.remark}</p>
 	</div>
 	<div class="weui-cell__ft">
-		<c:if test="${i.status==0}">
-			<a href="${src}/centercontroller/operateOrder?id=${i.id}&state=1" class="weui-btn weui-btn_mini weui-btn_primary">接单</a>
-		</c:if>
-		<c:if test="${i.status==1}">
-			<a href="#" class="weui-btn weui-btn_mini weui-btn_default">已确认</a>
+		<c:if test="${state==1}">
+			<c:if test="${i.status==0}">
+				<a href="${src}/centercontroller/operateOrder?id=${i.id}&state=1" class="weui-btn weui-btn_mini weui-btn_primary">接单</a>
+			</c:if>
+			<c:if test="${i.status==1}">
+				<span href="#" class="weui-btn weui-btn_mini weui-btn_default">已确认</span>
+			</c:if>
+			<c:if test="${i.status==2}">
+				<a href="#" class="weui-btn weui-btn_mini weui-btn_default">已取消</a>
+			</c:if>
 		</c:if>
 	</div>
 </div>

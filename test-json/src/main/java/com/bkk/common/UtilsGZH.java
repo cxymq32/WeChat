@@ -8,14 +8,23 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.springframework.ui.Model;
 
 import com.alibaba.fastjson.JSON;
 import com.bkk.common.base.MyHTTP;
 import com.bkk.common.base.MyProperties;
 import com.bkk.common.base.MyRedis;
+import com.bkk.common.base.SHA1;
 
 import net.sf.json.JSONObject;
 
@@ -29,6 +38,47 @@ public class UtilsGZH {
 	public static String openid_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code";
 
 	public static void main(String[] args) {
+	}
+
+	/** 获取网页版js调用权限 */
+	public static Model getJSapi(Model model) {
+		String appid = MyProperties.getProperties("my.properties", "g_appid");
+		long timestamp = new Date().getTime();
+		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");// 32位随机数
+
+		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + UtilsGZH.getAccessToken()
+				+ "&type=jsapi";
+		com.alibaba.fastjson.JSONObject json = JSON.parseObject(MyHTTP.postParams(url, ""));
+		log.info("json===========>" + json);
+		String ticket = (String) json.get("ticket");
+		log.info("ticket===========>" + ticket);
+
+		// 生成signature
+		List<String> nameList = new ArrayList<String>();
+		nameList.add("noncestr");
+		nameList.add("timestamp");
+		nameList.add("url");
+		nameList.add("jsapi_ticket");
+		Map<String, Object> valueMap = new HashMap<String, Object>();
+		valueMap.put("noncestr", nonceStr);
+		valueMap.put("timestamp", timestamp);
+		valueMap.put("url", "http://gzh.coconet.net.cn/test-json/centercontroller/myShop");
+		valueMap.put("jsapi_ticket", ticket);
+		Collections.sort(nameList);
+		String origin = "";
+		for (int i = 0; i < nameList.size(); i++) {
+			origin += nameList.get(i) + "=" + valueMap.get(nameList.get(i)).toString() + "&";
+		}
+		origin = origin.substring(0, origin.length() - 1);
+		log.info("origin=============>" + origin);
+		String signature = SHA1.encode(origin).toLowerCase();
+		log.info("signature=============>" + signature);
+
+		model.addAttribute("appId", appid);
+		model.addAttribute("timestamp", timestamp);
+		model.addAttribute("nonceStr", nonceStr);
+		model.addAttribute("signature", signature);
+		return model;
 	}
 
 	/** 用户发给公众号的消息-保存为josn文本格式 */
@@ -142,12 +192,7 @@ public class UtilsGZH {
 		return tmpStr != null ? tmpStr.equals(signature.toUpperCase()) : false;
 	}
 
-	/**
-	 * 将字节数组转换为十六进制字符串
-	 * 
-	 * @param byteArray
-	 * @return
-	 */
+	/** 将字节数组转换为十六进制字符串 */
 	private static String byteToStr(byte[] byteArray) {
 		String strDigest = "";
 		for (int i = 0; i < byteArray.length; i++) {
@@ -156,12 +201,7 @@ public class UtilsGZH {
 		return strDigest;
 	}
 
-	/**
-	 * 将字节转换为十六进制字符串
-	 * 
-	 * @param mByte
-	 * @return
-	 */
+	/** 将字节转换为十六进制字符串 */
 	private static String byteToHexStr(byte mByte) {
 		char[] Digit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 		char[] tempArr = new char[2];
