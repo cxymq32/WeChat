@@ -91,7 +91,7 @@ public class DloadImgUtil {
 			String error = String.format("下载媒体文件失败：%s", e);
 			System.out.println(error);
 		}
-		return filePath;
+		return filePath.substring(filePath.lastIndexOf("/"));
 	}
 
 	/***

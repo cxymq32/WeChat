@@ -17,6 +17,8 @@ public class Shop implements Serializable {
 	@GeneratedValue
 	private Long id;
 	private Date createTime;
+	// 商家代码
+	private String shopCode;
 	// 商铺名称
 	private String shopName;
 	// 电话
@@ -33,8 +35,6 @@ public class Shop implements Serializable {
 	// 优惠信息
 	private String sale;
 
-	// 商铺持有人
-	private Long userId;
 	// 是否显示 0 否 1是
 	private int isShow;
 	// 精度
@@ -52,6 +52,14 @@ public class Shop implements Serializable {
 
 	public void setSale(String sale) {
 		this.sale = sale;
+	}
+
+	public String getShopCode() {
+		return shopCode;
+	}
+
+	public void setShopCode(String shopCode) {
+		this.shopCode = shopCode;
 	}
 
 	public String getLocation() {
@@ -156,14 +164,6 @@ public class Shop implements Serializable {
 
 	public void setKind3(String kind3) {
 		this.kind3 = kind3;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public int getIsShow() {

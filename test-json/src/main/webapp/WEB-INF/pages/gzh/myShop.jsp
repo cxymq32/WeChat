@@ -16,14 +16,46 @@
 </head>
 
 <body>
+<from action="">
 <div class="page flex js_show">
     <div class="page__hd">
-        <h1 class="page__title">Flex</h1>
+        <h1 class="page__title">${shop.shopName}</h1>
         <p class="page__desc">Flex布局</p>
     </div>
     <div class="page__bd page__bd_spacing">
         <div class="weui-flex">
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
+            <div class="weui-flex__item">
+	            <div class="weui-cells">
+		            <div class="weui-cell">
+		                <div class="weui-cell__bd">
+		                    <input class="weui-input" type="text" value="dddd萨达" placeholder="请输入文本" disabled="disabled">
+		                </div>
+		                <div class="weui-cell__bd">
+		                    <input class="weui-input" type="text" placeholder="请输入文本">
+		                </div>
+		            </div>
+		            <div class="weui-cell">
+		                <div class="weui-cell__bd">
+		                    <div class="weui-uploader">
+		                        <div class="weui-uploader__hd">
+		                            <p class="weui-uploader__title">图片上传</p>
+		                            <div class="weui-uploader__info">0/2</div>
+		                        </div>
+		                        <div class="weui-uploader__bd">
+		                            <ul class="weui-uploader__files" id="uploaderFiles">
+		                                <li class="weui-uploader__file">
+	                                        <img id="image" src="" style="width: 100%;height: 100%"  onclick="viewImg(this.src)"/>
+		                                </li>
+		                            </ul>
+		                            <div class="weui-uploader__input-box">
+		                                <input onclick="chooseImage()" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+	        </div>
         </div>
         <div class="weui-flex">
             <div class="weui-flex__item"><div class="placeholder">weui</div></div>
@@ -50,12 +82,15 @@
         <a href="javascript:home()"><img src="./images/icon_footer_link.png"></a>
     </div>
 </div>
-
+</from>
+	<span>${signature}</span>
+	<span>js===${shop}</span>
 	<span>js===${appId}</span>
 	<span>js===${timestamp}</span>
 	<span>js===${nonceStr}</span>
-	<span onclick="chooseImage()">chooseImage===${signature}</span>
+	<span onclick="chooseImage()">chooseImage===</span>
 	<image id="image"></image>
+	<image src="${src}/resources/pic/FQNWDPnp2B31hYiuAScFr3RadOh_PiSnpTsXjLtMCuUgmNT3cUN2AjHejz0AVpUi.jpg"></image>
 	<image src="${src}/resources/pic/FQNWDPnp2B31hYiuAScFr3RadOh_PiSnpTsXjLtMCuUgmNT3cUN2AjHejz0AVpUi.jpg"></image>
 	<script>
 	var time = ${timestamp};
@@ -79,12 +114,20 @@
 			$.ajax({
 				  type: 'GET',
 				  url: '${src}/centercontroller/downloadImage',
-				  data: {mediaId:media_id},
+				  data: {mediaId:media_id,shopId:"${shop.id}"},
 				  success: function(res){
 					  console.log(res)
 				  }
 			});
 			
+		}
+		function viewImg(src){
+			alert(src)
+			$("img").attr("src")
+			wx.previewImage({
+				current: '', // 当前显示图片的http链接
+				urls: [src] // 需要预览的图片http链接列表
+			});
 		}
 		function chooseImage(){
 			wx.chooseImage({
@@ -93,28 +136,10 @@
 				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
 				success: function (res) {
 					var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-					console.log("localIds="+localIds)
-					wx.uploadImage({
-						localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
-						isShowProgressTips: 1, // 默认为1，显示进度提示
-						success: function (res) {
-							var serverId = res.serverId; // 返回图片的服务器端ID
-							console.log("serverId="+serverId)
-							pushServer(serverId);
-							wx.downloadImage({
-								serverId: serverId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
-								isShowProgressTips: 1, // 默认为1，显示进度提示
-								success: function (res) {
-									var localId = res.localId; // 返回图片下载后的本地ID
-									console.log("localId="+localId)
-									$("#image").attr('src',localId);  
-								}
-							});
-						}
-					});
+					$("#image").attr('src',localIds);
+					$("#uploaderFiles")
 				}
 			});
-			
 		}
 	</script>
 </body>

@@ -1,12 +1,8 @@
 package com.bkk.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +21,9 @@ import com.bkk.common.G_MessageUtil;
 import com.bkk.common.UtilsGZH;
 import com.bkk.common.UtilsXCX;
 import com.bkk.common.base.DloadImgUtil;
-import com.bkk.common.base.MyHTTP;
 import com.bkk.common.base.MyProperties;
 import com.bkk.common.base.MyString;
 import com.bkk.common.base.MyXML;
-import com.bkk.common.base.SHA1;
 import com.bkk.common.msg.TextMessage;
 import com.bkk.domain.Order;
 import com.bkk.domain.Shop;
@@ -48,29 +42,58 @@ public class G_CenterController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping("/downloadImage")
-	public void downloadImage(Model model, String mediaId, HttpServletRequest request, HttpServletResponse response) {
+	public void downloadImage(Model model, String mediaId, int shopId, HttpServletRequest request) {
 		String savePath = this.getClass().getClassLoader().getResource("").getPath();
 		savePath = savePath.substring(0, savePath.indexOf("/WEB-INF")) + "/resources/pic";
 		log.info("mediaId==================>>>>" + mediaId);
 		log.info("savePath==================>>>>" + savePath);
-		DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
+		log.info("shopId==================>>>>" + shopId);
+		String fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
+		String url = request.getRequestURL().toString();
+		url = url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic/" + fileName;
+		log.info("savePath==========url========>>>>" + url);
 	}
 
 	/** 我的店铺 */
 	@RequestMapping("/myShop")
-	public String myShop(Model model, String code, String state, HttpSession session) throws Exception {
+	public String myShop(Model model, String code, String state, HttpServletRequest request, HttpSession session)
+			throws Exception {
 		long start = System.currentTimeMillis();
 		log.info("===>>WX回调带回code=" + code + "\t state=" + state);
-		User u = getUserFromSeesionOrCode(code, session);
-		if (u != null) {
-			List<Shop> listsShop = shopService.getByUserId(u.getId());
-			if (listsShop.size() > 0) {
-				model.addAttribute("shop", listsShop.get(0));
-			}
+		User u = getUserFromSeesionOrCode(code, session);// 获取用户信息
+		log.info("===>>user=" + u);
+		if (u != null && u.getShopId() != null) {
+			Shop shop = shopService.findById(Shop.class, u.getShopId());
+			log.info("ShopName===========>" + shop.getShopName());
+			model.addAttribute("shop", shop);
+		} else {
+			return "gzh/firstLogin";
 		}
-		model = UtilsGZH.getJSapi(model);
+		String url = request.getRequestURL().toString() + "?" + request.getQueryString();
+		model = UtilsGZH.getJSapi(model, url);// 获取网页授权jsapi
 		log.warn("myshop--use--time=========>>" + (System.currentTimeMillis() - start) / 1000);
 		return "gzh/myShop";
+	}
+
+	/** 绑定店铺 */
+	@ResponseBody
+	@RequestMapping("/binding")
+	public int binding(Model model, String shopCode, HttpSession session) throws Exception {
+		log.info("binding=====code======>" + shopCode);
+		List<Shop> shoplist = shopService.getByShopCode(shopCode);
+		if (shoplist.size() > 0) {
+			User u = (User) session.getAttribute("cuser");
+			log.info("session=binding==user==>>" + u);
+			if (u != null) {
+				u.setShopId(shoplist.get(0).getId());
+				log.info("update===user==>>" + u.getShopId());
+				userService.update(u);
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+		return 0;
 	}
 
 	/** 预约列表 */
@@ -89,13 +112,17 @@ public class G_CenterController extends BaseController {
 	/** 从seesion中或者重新获取用户 */
 	public User getUserFromSeesionOrCode(String code, HttpSession session) throws Exception {
 		String openid = (String) session.getAttribute("openid");
-		log.info("session===openid=======>>" + openid);
+		log.info("get==openid===from===session=====>>" + openid);
 		if (MyString.isNotEmpty(openid)) {// 不是微信底部跳转，页面刷新时
 			User u = (User) session.getAttribute("cuser");
-			if (u != null && u.getShopId() > 0) {
+			log.info("get==user==from==session=====>>" + u);
+			if (u != null && u.getShopId() != null) {
+				return u;
+			} else {
+				u = userService.findByOpenid(openid);
+				session.setAttribute("cuser", u);
 				return u;
 			}
-			log.info("session===user=======>>" + u.getId());
 		} else if (MyString.isNotEmpty(code)) {// 微信底部跳转回调链接
 			String json = UtilsGZH.getUserOpenId(code);
 			com.alibaba.fastjson.JSONObject jsonObejct = JSON.parseObject(json);
@@ -103,13 +130,15 @@ public class G_CenterController extends BaseController {
 			if (MyString.isNotEmpty(openid)) {
 				session.setAttribute("openid", openid);
 				User u = userService.findByOpenid(openid);
-				if (u != null && u.getShopId() > 0) {
-					session.setAttribute("cuser", u);
+				log.info("userService===get===user=======>>" + u);
+				session.setAttribute("cuser", u);
+				if (u != null && u.getShopId() != null) {
 					log.info("get===user=======>>" + u.getId());
 					return u;
 				}
 			}
 		}
+		log.info("===notfindUser=======");
 		return null;
 
 	}

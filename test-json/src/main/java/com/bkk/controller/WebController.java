@@ -74,23 +74,12 @@ public class WebController extends BaseController {
 	public String save(@RequestParam("files") MultipartFile[] files, Model model, HttpSession session, Shop shop) {
 		String path = this.getClass().getClassLoader().getResource("").getPath() + "pic";
 
-		// // 判断file数组不能为空并且长度大于0
-		// if (images != null && images.length > 0) {
-		// // 循环获取file数组中得文件
-		// for (int i = 0; i < images.length; i++) {
-		// MultipartFile file = images[i];
-		// // 保存文件
-		// String path2 = WebUtils.saveFile(file, path);
-		// System.out.println(path2);
-		// }
-		// }
 		if (shop.getLocation() == "")
 			shop.setLocation("37.367727,118.020893");
 		String[] location = shop.getLocation().split(",");
 		shop.setLatitude(Double.parseDouble(location[0]));
 		shop.setLongitude(Double.parseDouble(location[1]));
 		if (shop.getId() == null) {
-			shop.setUserId(getCurrUser(session).getId());
 			shopService.save(shop);
 		} else {
 			shopService.update(shop);

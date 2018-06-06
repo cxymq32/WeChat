@@ -31,4 +31,10 @@ public class ShopService extends BaseService {
 		List<Shop> list = (List<Shop>) getHibernateTemplate().findByCriteria(criteria);
 		return list;
 	}
+
+	public List<Shop> getByShopCode(String code) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Shop.class);
+		criteria.add(Restrictions.eq("shopCode", code));
+		return (List<Shop>) getHibernateTemplate().findByCriteria(criteria);
+	}
 }

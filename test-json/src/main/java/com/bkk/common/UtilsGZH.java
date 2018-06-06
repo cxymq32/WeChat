@@ -40,8 +40,12 @@ public class UtilsGZH {
 	public static void main(String[] args) {
 	}
 
-	/** 获取网页版js调用权限 */
-	public static Model getJSapi(Model model) {
+	/**
+	 * 获取网页版js调用权限
+	 * 
+	 * @param urlStr
+	 */
+	public static Model getJSapi(Model model, String urlStr) {
 		String appid = MyProperties.getProperties("my.properties", "g_appid");
 		long timestamp = new Date().getTime();
 		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");// 32位随机数
@@ -62,7 +66,7 @@ public class UtilsGZH {
 		Map<String, Object> valueMap = new HashMap<String, Object>();
 		valueMap.put("noncestr", nonceStr);
 		valueMap.put("timestamp", timestamp);
-		valueMap.put("url", "http://gzh.coconet.net.cn/test-json/centercontroller/myShop");
+		valueMap.put("url", urlStr);
 		valueMap.put("jsapi_ticket", ticket);
 		Collections.sort(nameList);
 		String origin = "";

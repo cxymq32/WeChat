@@ -10,18 +10,20 @@ public class test {
 	public static SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 
 	public static void main(String[] args) throws Exception {
-		
-String a = "/usr/local/src/tomcat-80/webapps/test-json/WEB-INF/classes/";
-System.out.println(a.substring(0,a.indexOf("/WEB-INF")));
-//		resources
+		int a ;
+//		System.out.println(a > 0);
+//		String a = "/usr/local/src/tomcat-80/webapps/test-json/WEB-INF/classes/";
+//		System.out.println(a.substring(0, a.indexOf("/WEB-INF")));
+		// resources
 		Calendar calendar = Calendar.getInstance();
-//	calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - 1);
-//	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//	System.out.println("一个小时前的时间：" + df.format(calendar.getTime()));
-//	System.out.println("当前的时间：" + df.format(new Date()));		System.out.println();
-//		
-//		String jsonStr = "{\"touser\":\"otnGe4uyCaDFPj5v5ek-PuasF9gI\",\"template_id\":\"Djsyb6FjccRPJ2uxWXcpdr8s5-K7YqSLiGvwwtSEXHY\",\"form_id\":\"1527674011716\",\"data\":{\"keyword1\":{\"value\":\"金汉森南美烤肉自助\",\"color\":\"#4a4a4a\"},\"keyword2\":{\"value\":\"29\",\"color\":\"#4a4a4a\"},\"keyword3\":{\"value\":\"15355355588\",\"color\":\"#4a4a4a\"},\"keyword4\":{\"value\":\"222e\",\"color\":\"#4a4a4a\"}}}";
-//		System.out.println(UtilsXCX.sengMsg(jsonStr));
+		// calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - 1);
+		// SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		// System.out.println("一个小时前的时间：" + df.format(calendar.getTime()));
+		// System.out.println("当前的时间：" + df.format(new Date())); System.out.println();
+		//
+		// String jsonStr =
+		// "{\"touser\":\"otnGe4uyCaDFPj5v5ek-PuasF9gI\",\"template_id\":\"Djsyb6FjccRPJ2uxWXcpdr8s5-K7YqSLiGvwwtSEXHY\",\"form_id\":\"1527674011716\",\"data\":{\"keyword1\":{\"value\":\"金汉森南美烤肉自助\",\"color\":\"#4a4a4a\"},\"keyword2\":{\"value\":\"29\",\"color\":\"#4a4a4a\"},\"keyword3\":{\"value\":\"15355355588\",\"color\":\"#4a4a4a\"},\"keyword4\":{\"value\":\"222e\",\"color\":\"#4a4a4a\"}}}";
+		// System.out.println(UtilsXCX.sengMsg(jsonStr));
 		// String a = "ssssssssss{0}ddddddd";
 		// System.out.println(MessageFormat.format(a,"333"));
 		// String a =
