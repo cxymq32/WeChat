@@ -40,18 +40,51 @@ import net.sf.json.JSONObject;
 public class G_CenterController extends BaseController {
 	private final static Logger log = Logger.getLogger(G_CenterController.class);
 
-	@ResponseBody
-	@RequestMapping("/downloadImage")
-	public void downloadImage(Model model, String mediaId, int shopId, HttpServletRequest request) {
+	/** 修改店铺信息 */
+	@RequestMapping("/modifyShop")
+	public String modifyShop(Model model, Shop shop, HttpServletRequest request) {
+		log.info("shop==================>>>>" + shop.getId());
 		String savePath = this.getClass().getClassLoader().getResource("").getPath();
 		savePath = savePath.substring(0, savePath.indexOf("/WEB-INF")) + "/resources/pic";
-		log.info("mediaId==================>>>>" + mediaId);
 		log.info("savePath==================>>>>" + savePath);
-		log.info("shopId==================>>>>" + shopId);
-		String fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
+
 		String url = request.getRequestURL().toString();
-		url = url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic/" + fileName;
-		log.info("savePath==========url========>>>>" + url);
+		String fileName = "";
+
+		Shop getShop = shopService.findById(Shop.class, shop.getId());
+		// 主图
+		if (shop.getMainImage() != null) {
+			fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), shop.getMainImage(), savePath);
+			getShop.setMainImage(url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName);
+		}
+		// 幻灯片
+		if (shop.getSlideImage() != null) {
+			String[] slideArr = shop.getSlideImage().substring(1).split(",");
+			String slideStr = "";
+			for (String mediaId : slideArr) {
+				fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
+				slideStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName + ",";
+			}
+			log.info("savePath==========slideStr========>>>>" + slideStr);
+			getShop.setSlideImage(slideStr);
+		}
+		// 菜单
+		if (shop.getMenuImage() != null) {
+			String[] menuArr = shop.getMenuImage().substring(1).split(",");
+			String menuStr = "";
+			for (String mediaId : menuArr) {
+				fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
+				menuStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName + ",";
+			}
+			log.info("savePath==========menuStr========>>>>" + menuStr);
+			getShop.setMenuImage(menuStr);
+		}
+		getShop.setShopName(shop.getShopName());
+		getShop.setAdress(shop.getAdress());
+		getShop.setPhone(shop.getPhone());
+		getShop.setSale(shop.getSale());
+		shopService.update(getShop);
+		return "redirect:/centercontroller/myShop";
 	}
 
 	/** 我的店铺 */
@@ -62,14 +95,16 @@ public class G_CenterController extends BaseController {
 		log.info("===>>WX回调带回code=" + code + "\t state=" + state);
 		User u = getUserFromSeesionOrCode(code, session);// 获取用户信息
 		log.info("===>>user=" + u);
-		if (u != null && u.getShopId() != null) {
-			Shop shop = shopService.findById(Shop.class, u.getShopId());
-			log.info("ShopName===========>" + shop.getShopName());
-			model.addAttribute("shop", shop);
-		} else {
+		if (u == null || u.getShopId() == null) {
 			return "gzh/firstLogin";
 		}
-		String url = request.getRequestURL().toString() + "?" + request.getQueryString();
+		Shop shop = shopService.findById(Shop.class, u.getShopId());
+		log.info("ShopName===========>" + shop.getShopName());
+		model.addAttribute("shop", shop);
+		String url = request.getRequestURL().toString();
+		if (request.getQueryString() != null) {
+			url += "?" + request.getQueryString();
+		}
 		model = UtilsGZH.getJSapi(model, url);// 获取网页授权jsapi
 		log.warn("myshop--use--time=========>>" + (System.currentTimeMillis() - start) / 1000);
 		return "gzh/myShop";

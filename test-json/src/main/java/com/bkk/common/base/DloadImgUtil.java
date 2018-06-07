@@ -52,6 +52,8 @@ public class DloadImgUtil {
 	 *            文件在本地服务器上的存储路径
 	 */
 	public static String downloadMedia(String accessToken, String mediaId, String savePath) {
+		if(MyString.isEmpty(mediaId)||MyString.isEmpty(accessToken)||MyString.isEmpty(savePath))
+			return null;
 		String filePath = null;
 		// 拼接请求地址
 		String requestUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
