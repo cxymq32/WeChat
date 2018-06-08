@@ -24,20 +24,27 @@
 <div class="page flex js_show">
     <div class="page__hd">
         <h1 class="page__title">${shop.shopName}</h1>
-        <p class="page__desc">${shop.slideImage}</p>
+        <p class="page__desc">${shop.adress}</p>
     </div>
     <div class="page__bd page__bd_spacing">
         <div class="weui-flex">
             <div class="weui-flex__item">
 	            <div class="weui-cells">
 		            <div class="weui-cell">
+		                <div class="weui-cell__hd"><label class="weui-label">电话</label></div>
 		                <div class="weui-cell__bd">
-		                    <input class="weui-input" type="text" value="dddd萨达" placeholder="请输入文本" disabled="disabled">
-		                </div>
-		                <div class="weui-cell__bd">
-		                    <input class="weui-input" type="text" placeholder="请输入文本">
+		                    <input class="weui-input" type="number" pattern="^[1][3,4,5,7,8][0-9]{9}$" placeholder="请输入电话号码">
 		                </div>
 		            </div>
+		            <div class="weui-cells__title">店内优惠</div>
+					<div class="weui-cells weui-cells_form">
+					    <div class="weui-cell">
+					        <div class="weui-cell__bd">
+					            <textarea class="weui-textarea" placeholder="请输入文本" rows="3"></textarea>
+					            <div class="weui-textarea-counter"><span>0</span>/200</div>
+					        </div>
+					    </div>
+					</div>
 		            <div class="weui-cell">
 		                <div class="weui-cell__bd">
 		                    <div class="weui-uploader">
