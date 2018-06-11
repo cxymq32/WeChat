@@ -21,6 +21,7 @@
 <input type="hidden" name="mainImage" id="mainImage"/>
 <input type="hidden" name="slideImage" id="slideImage"/>
 <input type="hidden" name="menuImage" id="menuImage"/>
+</form>
 <div class="page flex js_show">
     <div class="page__hd">
         <h1 class="page__title">${shop.shopName}</h1>
@@ -36,6 +37,8 @@
 		                    <input class="weui-input" type="number" pattern="^[1][3,4,5,7,8][0-9]{9}$" placeholder="请输入电话号码">
 		                </div>
 		            </div>
+	            </div>
+	            <div class="weui-cells">
 		            <div class="weui-cells__title">店内优惠</div>
 					<div class="weui-cells weui-cells_form">
 					    <div class="weui-cell">
@@ -45,6 +48,8 @@
 					        </div>
 					    </div>
 					</div>
+				</div>
+	            <div class="weui-cells">
 		            <div class="weui-cell">
 		                <div class="weui-cell__bd">
 		                    <div class="weui-uploader">
@@ -56,7 +61,7 @@
 		                            <ul class="weui-uploader__files" id="uploaderFiles">
 		                            </ul>
 		                            <div class="weui-uploader__input-box">
-		                                <input onclick="slideImage()" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+		                                <input onclick="selectSlideImage()" class="weui-uploader__input" type="file" accept="image/*" multiple="">
 		                            </div>
 		                        </div>
 		                    </div>
@@ -65,32 +70,12 @@
 		        </div>
 	        </div>
         </div>
-        <div class="weui-flex">
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-        </div>
-        <div class="weui-flex">
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-        </div>
-        <div class="weui-flex">
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-        </div>
-        <div class="weui-flex">
-            <div><div class="placeholder">weui</div></div>
-            <div class="weui-flex__item"><div class="placeholder">weui</div></div>
-            <div><div class="placeholder">weui</div></div>
-        </div>
     </div>
     <div class="page__ft j_bottom">
         <button type="submit">提交</button>
     </div>
 </div>
-</form>
+
 	<span>${signature}</span>
 	<span>js===${shop}</span>
 	<span>js===${appId}</span>
@@ -114,7 +99,7 @@
 		    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
 		});
 		wx.error(function(res){
-			console.log(res)
+			alert(res)
 		    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 		});
 		var img = new Array();
@@ -124,7 +109,7 @@
 				urls: img // 需要预览的图片http链接列表
 			});
 		}
-		function slideImage(){
+		function selectSlideImage(){
 			wx.chooseImage({
 				count: 1, // 默认9
 				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -144,7 +129,7 @@
 						}
 					});
 				}
-			});
+			});			
 		}
 	</script>
 </body>

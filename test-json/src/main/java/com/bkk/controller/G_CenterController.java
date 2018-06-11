@@ -115,6 +115,9 @@ public class G_CenterController extends BaseController {
 	@RequestMapping("/binding")
 	public int binding(Model model, String shopCode, HttpSession session) throws Exception {
 		log.info("binding=====code======>" + shopCode);
+		if (MyString.isEmpty(shopCode)) {
+			return -1;
+		}
 		List<Shop> shoplist = shopService.getByShopCode(shopCode);
 		if (shoplist.size() > 0) {
 			User u = (User) session.getAttribute("cuser");

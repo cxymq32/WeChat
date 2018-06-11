@@ -3,6 +3,7 @@ package com.bkk.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,8 +30,10 @@ public class Shop implements Serializable {
 	// 店铺主图
 	private String mainImage;
 	// 轮播图
+	@Column(columnDefinition = "TEXT")
 	private String slideImage;
 	// 菜单图
+	@Column(columnDefinition = "TEXT")
 	private String menuImage;
 	// 优惠信息
 	private String sale;
