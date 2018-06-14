@@ -21,6 +21,7 @@ import com.bkk.common.G_MessageUtil;
 import com.bkk.common.UtilsGZH;
 import com.bkk.common.UtilsXCX;
 import com.bkk.common.base.DloadImgUtil;
+import com.bkk.common.base.MyAI;
 import com.bkk.common.base.MyProperties;
 import com.bkk.common.base.MyString;
 import com.bkk.common.base.MyXML;
@@ -273,9 +274,12 @@ public class G_CenterController extends BaseController {
 				textMessage.setFromUserName(toUserName);
 				textMessage.setCreateTime(new Date().getTime());
 				textMessage.setMsgType(G_MessageUtil.MESSSAGE_TYPE_TEXT);
-				String content = requestMap.get("Content");
-				respContent = "你发的消息是：" + requestMap.get("Content");
-				textMessage.setContent(respContent);
+				String answer = JSON
+						.parseObject(MyAI.talk(requestMap.get("Content"), fromUserName).get("data").toString())
+						.get("answer").toString();
+				textMessage.setContent("我不知道您说的什么");
+				if (MyString.isNotEmpty(answer))
+					textMessage.setContent(answer);
 				respMessage = G_MessageUtil.textMessageToXml(textMessage);
 				respMessage = respMessage.replaceAll("content", "Content");
 			}
