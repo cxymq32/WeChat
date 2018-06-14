@@ -25,8 +25,31 @@
 <div class="page flex js_show">
     <div class="page__hd">
         <h1 class="page__title">${shop.shopName}</h1>
-        <p class="page__desc">${shop.adress}</p>
+        <p class="page__desc">地址：${shop.adress}</p>
+        <p class="page__desc">电话：${shop.phone}</p>
     </div>
+
+<div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">店铺主图</p>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files">
+                                <li class="weui-uploader__file">
+                                	<img src="${shop.mainImage}" width="100%" height="100%"/>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- lll -->
     <div class="page__bd page__bd_spacing">
         <div class="weui-flex">
             <div class="weui-flex__item">
@@ -103,10 +126,12 @@
 		    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 		});
 		var img = new Array();
-		function viewImg(i){
+		function viewImg(arr,i){
+			alert(i)
+			alert(arr)
 			wx.previewImage({
-				current: img[i-1], // 当前显示图片的http链接
-				urls: img // 需要预览的图片http链接列表
+				current: arr[i-1], // 当前显示图片的http链接
+				urls: arr // 需要预览的图片http链接列表
 			});
 		}
 		function selectSlideImage(){
@@ -118,7 +143,7 @@
 					var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
 					img[img.length]=localIds+"";
 					$("#uploaderFiles").append('<li class="weui-uploader__file"><img src="'+localIds
-							+'" style="width: 100%;height: 100%"  onclick="viewImg('+img.length+')"/></li>');
+							+'" style="width: 100%;height: 100%"  onclick="viewImg('+img+","+img.length+')"/></li>');
 					$("#picSize").html(img.length);
 					wx.uploadImage({
 						localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
