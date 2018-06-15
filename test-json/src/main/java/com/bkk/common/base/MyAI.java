@@ -18,7 +18,7 @@ public class MyAI {
 	public static void main(String[] args) throws Exception {
 		// System.out.println(talk("滨州天气怎么样").get("data"));
 		// System.out.println(talk("有什么好吃的").get("data"));
-		// System.out.println(talk("15乘以43等于几", "123").get("data"));
+		// System.out.println(talk("15乘以63等于几", "123").get("data"));
 		// System.out.println(talk("滨州天气怎么样", "123").get("data"));
 	}
 
@@ -32,7 +32,7 @@ public class MyAI {
 		String sign = MyMD5.MD5Encode(param + "&app_key=JTMq3LQfNeQQ9CDN", "UTF-8").toUpperCase();
 		url += "?" + param + "&sign=" + sign;
 		log.info("MyAI===========URL=========>>" + url);
-		return JSON.parseObject(MyHTTP.httpGet(url, "UTF-8"));
+		return JSON.parseObject(MyHTTP.httpGet(url));
 	}
 
 }

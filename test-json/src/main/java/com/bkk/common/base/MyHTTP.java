@@ -8,10 +8,13 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 public class MyHTTP {
@@ -25,7 +28,7 @@ public class MyHTTP {
 	 * @return
 	 */
 	public static String postWithXmlParams(String url, String xmlParams) {
-		DefaultHttpClient client = new DefaultHttpClient();
+		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost httpost = new HttpPost(url);
 		try {
 			httpost.setEntity(new StringEntity(xmlParams, "UTF-8"));
@@ -39,7 +42,7 @@ public class MyHTTP {
 
 	/** 发送json数据 */
 	public static String postParams(String url, String jsonParams) {
-		DefaultHttpClient client = new DefaultHttpClient();
+		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost httpost = new HttpPost(url);
 		try {
 			httpost.setEntity(new StringEntity(jsonParams, "UTF-8"));
@@ -52,9 +55,8 @@ public class MyHTTP {
 		}
 	}
 
-	public static String httpGet(String url, String charset) throws HttpException, IOException {
-
-		DefaultHttpClient client = new DefaultHttpClient();
+	public static String httpGet(String url) throws HttpException, IOException {
+		CloseableHttpClient client = HttpClients.createDefault();
 		String json = null;
 		HttpGet httpGet = new HttpGet();
 		// 设置参数
@@ -71,11 +73,43 @@ public class MyHTTP {
 		StatusLine sL = httpResponse.getStatusLine();
 		int statusCode = sL.getStatusCode();
 		if (statusCode == 200) {
-			json = new String(body, charset);
-			entity.consumeContent();
+			json = new String(body, "UTF-8");
+			EntityUtils.consume(entity);
 		} else {
 			throw new HttpException("statusCode=" + statusCode);
 		}
 		return json;
+	}
+
+	public static void main(String[] args) {
+		String a = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx7255a01c5dfe1f7c&secret=e035d9830443adaa943e7f6415b20c21";
+		System.out.println(sendPost(a, ""));
+
+	}
+
+	public static String sendPost(String url, String data) {
+		String response = null;
+		try {
+			CloseableHttpClient httpclient = null;
+			CloseableHttpResponse httpresponse = null;
+			try {
+				httpclient = HttpClients.createDefault();
+				HttpPost httppost = new HttpPost(url);
+				StringEntity stringentity = new StringEntity(data, ContentType.create("text/json", "UTF-8"));
+				httppost.setEntity(stringentity);
+				httpresponse = httpclient.execute(httppost);
+				response = EntityUtils.toString(httpresponse.getEntity());
+			} finally {
+				if (httpclient != null) {
+					httpclient.close();
+				}
+				if (httpresponse != null) {
+					httpresponse.close();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return response;
 	}
 }
