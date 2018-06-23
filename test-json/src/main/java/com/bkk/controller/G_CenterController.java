@@ -51,40 +51,56 @@ public class G_CenterController extends BaseController {
 
 		String url = request.getRequestURL().toString();
 		String fileName = "";
-
-		Shop getShop = shopService.findById(Shop.class, shop.getId());
-		// 主图
-		if (shop.getMainImage() != null) {
-			fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), shop.getMainImage(), savePath);
-			getShop.setMainImage(url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName);
-		}
-		// 幻灯片
-		if (shop.getSlideImage() != null) {
-			String[] slideArr = shop.getSlideImage().substring(1).split(",");
-			String slideStr = "";
-			for (String mediaId : slideArr) {
-				fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
-				slideStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName + ",";
+		if (shop.getId() > 0) {
+			Shop getShop = shopService.findById(Shop.class, shop.getId());
+			// 主图
+			if (MyString.isNotEmpty(shop.getMainImage())) {
+				log.info("==========shop.getMainImage()========>>>>" + shop.getMainImage());
+				fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), shop.getMainImage(), savePath);
+				getShop.setMainImage(url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName);
 			}
-			log.info("savePath==========slideStr========>>>>" + slideStr);
-			getShop.setSlideImage(slideStr);
-		}
-		// 菜单
-		if (shop.getMenuImage() != null) {
-			String[] menuArr = shop.getMenuImage().substring(1).split(",");
-			String menuStr = "";
-			for (String mediaId : menuArr) {
-				fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
-				menuStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName + ",";
+			// 幻灯片
+			if (MyString.isNotEmpty(shop.getSlideImage())) {
+				log.info("==========shop.getSlideImage()========>>>>" + shop.getSlideImage());
+				String[] slideArr = shop.getSlideImage().substring(1).split(",");
+				String slideStr = "";
+				for (String mediaId : slideArr) {
+					fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
+					slideStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName + ",";
+				}
+				log.info("savePath==========slideStr========>>>>" + slideStr);
+				getShop.setSlideImage(slideStr);
 			}
-			log.info("savePath==========menuStr========>>>>" + menuStr);
-			getShop.setMenuImage(menuStr);
+			// 菜单
+			if (MyString.isNotEmpty(shop.getMenuImage())) {
+				log.info("==========shop.getMenuImage()========>>>>" + shop.getMenuImage());
+				String[] menuArr = shop.getMenuImage().substring(1).split(",");
+				String menuStr = "";
+				for (String mediaId : menuArr) {
+					fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
+					menuStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName + ",";
+				}
+				log.info("savePath==========menuStr========>>>>" + menuStr);
+				getShop.setMenuImage(menuStr);
+			}
+			if (MyString.isNotEmpty(shop.getShopName())) {
+				log.info("savePath==========menuStr========>>>>" + shop.getShopName());
+				getShop.setShopName(shop.getShopName());
+			}
+			if (MyString.isNotEmpty(shop.getAdress())) {
+				log.info("savePath==========menuStr========>>>>" + shop.getAdress());
+				getShop.setAdress(shop.getAdress());
+			}
+			if (MyString.isNotEmpty(shop.getPhone())) {
+				log.info("savePath==========menuStr========>>>>" + shop.getPhone());
+				getShop.setPhone(shop.getPhone());
+			}
+			if (MyString.isNotEmpty(shop.getSale())) {
+				log.info("savePath==========menuStr========>>>>" + shop.getSale());
+				getShop.setSale(shop.getSale());
+			}
+			shopService.update(getShop);
 		}
-		getShop.setShopName(shop.getShopName());
-		getShop.setAdress(shop.getAdress());
-		getShop.setPhone(shop.getPhone());
-		getShop.setSale(shop.getSale());
-		shopService.update(getShop);
 		return "redirect:/centercontroller/myShop";
 	}
 
