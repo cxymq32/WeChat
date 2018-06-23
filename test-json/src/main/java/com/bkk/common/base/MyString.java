@@ -8,7 +8,7 @@ public class MyString {
 	/** 随机获取一个商家码 */
 	public static String shopCode() {
 		String[] beforeShuffle = new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F",
-				"G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+				"G", "H", "I", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 		List<String> list = Arrays.asList(beforeShuffle);
 		Collections.shuffle(list);
 		StringBuilder sb = new StringBuilder();

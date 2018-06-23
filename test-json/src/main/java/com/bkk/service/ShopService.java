@@ -37,4 +37,10 @@ public class ShopService extends BaseService {
 		criteria.add(Restrictions.eq("shopCode", code));
 		return (List<Shop>) getHibernateTemplate().findByCriteria(criteria);
 	}
+
+	public void setShopCodeById(long shopId, String code) {
+		Shop temp = this.findById(Shop.class, shopId);
+		temp.setShopCode(code);
+		this.update(temp);
+	}
 }

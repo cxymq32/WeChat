@@ -13,9 +13,6 @@ import java.net.URLConnection;
 
 import org.apache.log4j.Logger;
 
-import com.bkk.common.UtilsGZH;
-import com.bkk.controller.G_CenterController;
-
 public class DloadImgUtil {
 	private final static Logger log = Logger.getLogger(DloadImgUtil.class);
 

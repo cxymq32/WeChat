@@ -69,7 +69,7 @@ body{padding-top: 0px;}
 		            <div class="weui-cell">
 		                <div class="weui-cell__hd"><label class="weui-label">电话</label></div>
 		                <div class="weui-cell__bd">
-		                    <input name="phone" class="weui-input" type="number" pattern="^[1][3,4,5,7,8][0-9]{9}$" placeholder="请输入数字" value="${shop.phone}">
+		                    <input name="phone" class="weui-input" type="number" pattern="^[1][3,4,5,7,8][0-9]{9}$" placeholder="${shop.phone}" value="${shop.phone}">
 		                </div>
 		            </div>
 	            </div>
@@ -171,7 +171,7 @@ body{padding-top: 0px;}
         </div>
         <div class="weui-cells weui-cells_form">
         	<div class="weui-cell weui-cell_switch">
-                <div class="weui-cell__bd">绑定码:&nbsp;&nbsp;&nbsp;<span style="color: red;">5G6F</span></div>
+                <div class="weui-cell__bd">绑定码:&nbsp;&nbsp;&nbsp;<span id="shopCode" style="color: red;">${shop.shopCode}</span></div>
                 <div class="weui-cell__ft">
                     <label for="switchCP" class="weui-switch-cp">
                         <input id="switchCP" class="weui-switch-cp__input" type="checkbox" checked="checked">
@@ -188,12 +188,23 @@ body{padding-top: 0px;}
 	<script>
 	var time = ${timestamp};
 	$(function(){
-		var sI = "${shop.slideImage}";
+		//获取绑定码
+		$("#switchCP").click(function(){
+			  if($("#shopCode").text()){
+				  $("#shopCode").html("");
+			  }else{
+				$.post("${src}/centercontroller/getShopCode?shopId=${shop.id}", function(data){
+				  	$("#shopCode").html(data.replace("\"","").replace("\"",""));
+				});
+			  }
+		});
+		//初始化轮播图
 		jQuery.each("${shop.slideImage}".split(","), function(i,val) {
 			if(val){
 				$("#slideImg").find("ul").append('<li class="weui-uploader__file"><img src="'+val+'" onclick="viewImg(\'${shop.slideImage}\','+i+')" width="100%" height="100%"/></li>');
 			}
 		});
+		//初始化菜单图
 		jQuery.each("${shop.menuImage}".split(","), function(i,val) {
 			if(val){
 				$("#menuImg").find("ul").append('<li class="weui-uploader__file"><img src="'+val+'" onclick="viewImg(\'${shop.menuImage}\','+i+')" width="100%" height="100%"/></li>')
@@ -223,6 +234,7 @@ body{padding-top: 0px;}
 				urls: arr.split(",") // 需要预览的图片http链接列表
 			});
 		}
+		var img = new Array();
 		function selectSlideImage(i){
 			wx.chooseImage({
 				count: 1, // 默认9

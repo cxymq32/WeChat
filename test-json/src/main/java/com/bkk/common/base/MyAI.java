@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bkk.controller.G_CenterController;
 
 public class MyAI {
 	private final static Logger log = Logger.getLogger(MyAI.class);
