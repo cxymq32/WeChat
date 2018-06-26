@@ -1,6 +1,10 @@
 package com.bkk.common.base;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -49,6 +53,35 @@ public class MyHTTP {
 			httpost.setHeader("content-type", "application/json");
 			HttpResponse response = client.execute(httpost);
 			return EntityUtils.toString(response.getEntity(), "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+	public static String getImg(String url, String jsonParams) {
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpPost httpost = new HttpPost(url);
+		try {
+			httpost.setEntity(new StringEntity(jsonParams, "UTF-8"));
+			httpost.setHeader("content-type", "application/json");
+			HttpResponse response = client.execute(httpost);
+		      
+            InputStream in = response.getEntity().getContent();  
+  
+            File file=new File("d:\\a.jpg");//可以是任何图片格式.jpg,.png等  
+            FileOutputStream fos=new FileOutputStream(file);  
+                
+            byte[] b = new byte[1024];  
+            int nRead = 0;  
+            while ((nRead = in.read(b)) != -1) {  
+                fos.write(b, 0, nRead);  
+            }  
+            fos.flush();  
+            fos.close();  
+            in.close();  
+			
+			return "ok";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "";
