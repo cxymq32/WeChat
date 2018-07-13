@@ -15,7 +15,7 @@ public class MyString {
 		for (int i = 0; i < list.size(); i++) {
 			sb.append(list.get(i));
 		}
-		return sb.toString().substring(5, 9);
+		return sb.toString().substring(5, 10);
 	}
 
 	/** 是否为空 */

@@ -59,28 +59,29 @@ public class MyHTTP {
 		}
 	}
 
-	public static String getImg(String url, String jsonParams) {
+	/** 生成小程序码 */
+	public static String getImg(String url, String jsonParams, long shopId,String path) {
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpPost httpost = new HttpPost(url);
 		try {
 			httpost.setEntity(new StringEntity(jsonParams, "UTF-8"));
 			httpost.setHeader("content-type", "application/json");
 			HttpResponse response = client.execute(httpost);
-		      
-            InputStream in = response.getEntity().getContent();  
-  
-            File file=new File("d:\\a.jpg");//可以是任何图片格式.jpg,.png等  
-            FileOutputStream fos=new FileOutputStream(file);  
-                
-            byte[] b = new byte[1024];  
-            int nRead = 0;  
-            while ((nRead = in.read(b)) != -1) {  
-                fos.write(b, 0, nRead);  
-            }  
-            fos.flush();  
-            fos.close();  
-            in.close();  
-			
+
+			InputStream in = response.getEntity().getContent();
+
+			File file = new File(path);// 可以是任何图片格式.jpg,.png等
+			FileOutputStream fos = new FileOutputStream(file);
+
+			byte[] b = new byte[1024];
+			int nRead = 0;
+			while ((nRead = in.read(b)) != -1) {
+				fos.write(b, 0, nRead);
+			}
+			fos.flush();
+			fos.close();
+			in.close();
+
 			return "ok";
 		} catch (Exception e) {
 			e.printStackTrace();

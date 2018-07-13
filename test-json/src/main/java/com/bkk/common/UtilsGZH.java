@@ -41,6 +41,29 @@ public class UtilsGZH {
 		MyHTTP.postParams("https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat", "");
 	}
 
+	/** 获取图片服务器存储路径 */
+	public static String getPicPath() {
+		UtilsGZH temp = new UtilsGZH();
+		String savePath = temp.getClass().getClassLoader().getResource("").getPath();
+		savePath = savePath.substring(0, savePath.indexOf("/WEB-INF")) + "/resources/pic";
+		log.info("ticket===========>" + savePath);// usr/local/src/tomcat-80/webapps/test-json/resources/pic
+		return savePath;
+	}
+
+	/** 生成小程序码(shop_1.jpg)和二维码(shop_1_two.jpg) */
+	public static void createCode(long shopId) {
+		// 二维码
+		String u = "https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token=" + UtilsXCX.getAccess_token();
+		String jsonParams = "{\"path\":\"pages/shopdetail/shopdetail?shopId=6\", \"width\": 430}";
+		String path = getPicPath() + "/shop_" + shopId + "_two.jpg";
+		System.out.println("twoCode==>>" + MyHTTP.getImg(u, jsonParams, 6, path));
+		// 小程序码
+		u = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + UtilsXCX.getAccess_token();
+		jsonParams = "{\"page\":\"pages/shopdetail/shopdetail\", \"scene\": \"shopId=" + shopId + "\"}";
+		path = getPicPath() + "/shop_" + shopId + ".jpg";
+		System.out.println("XCXCode==>>" + MyHTTP.getImg(u, jsonParams, 6, path));
+	}
+
 	/**
 	 * 获取网页版js调用权限
 	 * 
@@ -51,8 +74,7 @@ public class UtilsGZH {
 		long timestamp = new Date().getTime();
 		String nonceStr = UUID.randomUUID().toString().replaceAll("-", "");// 32位随机数
 
-		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + UtilsGZH.getAccessToken()
-				+ "&type=jsapi";
+		String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + UtilsGZH.getAccessToken() + "&type=jsapi";
 		com.alibaba.fastjson.JSONObject json = JSON.parseObject(MyHTTP.postParams(url, ""));
 		log.info("json===========>" + json);
 		String ticket = (String) json.get("ticket");
@@ -113,8 +135,7 @@ public class UtilsGZH {
 
 	/** 获取用户信息,参数openid返回json对象 */
 	public static com.alibaba.fastjson.JSONObject getUserInfo(String openid) throws Exception {
-		String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + getAccessToken() + "&openid="
-				+ openid;
+		String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + getAccessToken() + "&openid=" + openid;
 		String userInfo = MyHTTP.postParams(url, "");
 		log.info("userInfo=======>>" + userInfo);
 		com.alibaba.fastjson.JSONObject userInfoJson = JSON.parseObject(userInfo);

@@ -33,7 +33,7 @@ import com.bkk.domain.User;
 import net.sf.json.JSONObject;
 
 /**
- * 中央处理器
+ * 中央处理器-公众号的所有请求
  * 
  */
 @Controller
@@ -55,8 +55,7 @@ public class G_CenterController extends BaseController {
 	public String modifyShop(Model model, Shop shop, HttpServletRequest request) {
 		if (shop != null) {
 			log.info("shop==================>>>>" + shop.getId());
-			String savePath = this.getClass().getClassLoader().getResource("").getPath();
-			savePath = savePath.substring(0, savePath.indexOf("/WEB-INF")) + "/resources/pic";
+			String savePath = UtilsGZH.getPicPath();
 			log.info("savePath==================>>>>" + savePath);
 
 			String url = request.getRequestURL().toString();
@@ -67,8 +66,7 @@ public class G_CenterController extends BaseController {
 				if (MyString.isNotEmpty(shop.getMainImage())) {
 					log.info("==========shop.getMainImage()========>>>>" + shop.getMainImage());
 					fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), shop.getMainImage(), savePath);
-					getShop.setMainImage(
-							url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName);
+					getShop.setMainImage(url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName);
 				}
 				// 幻灯片
 				if (MyString.isNotEmpty(shop.getSlideImage())) {
@@ -77,8 +75,7 @@ public class G_CenterController extends BaseController {
 					String slideStr = "";
 					for (String mediaId : slideArr) {
 						fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
-						slideStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName
-								+ ",";
+						slideStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName + ",";
 					}
 					log.info("savePath==========slideStr========>>>>" + slideStr);
 					getShop.setSlideImage(slideStr);
@@ -90,8 +87,7 @@ public class G_CenterController extends BaseController {
 					String menuStr = "";
 					for (String mediaId : menuArr) {
 						fileName = DloadImgUtil.downloadMedia(UtilsGZH.getAccessToken(), mediaId, savePath);
-						menuStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName
-								+ ",";
+						menuStr += url.substring(0, url.indexOf("/centercontroller/")) + "/resources/pic" + fileName + ",";
 					}
 					log.info("savePath==========menuStr========>>>>" + menuStr);
 					getShop.setMenuImage(menuStr);
@@ -120,8 +116,7 @@ public class G_CenterController extends BaseController {
 
 	/** 我的店铺 */
 	@RequestMapping("/myShop")
-	public String toMyShop(Model model, String code, String state, HttpServletRequest request, HttpSession session)
-			throws Exception {
+	public String toMyShop(Model model, String code, String state, HttpServletRequest request, HttpSession session) throws Exception {
 		long start = System.currentTimeMillis();
 		log.info("===>>WX回调带回code=" + code + "\t state=" + state);
 		User u = getUserFromSeesionOrCode(code, session);// 获取用户信息
@@ -236,22 +231,10 @@ public class G_CenterController extends BaseController {
 		return "redirect:/centercontroller/orderList?state=1";
 	}
 
-	/** 创建菜单createMenu?code=wxb90a701330e3bab8 */
-	@RequestMapping("/createMenu")
-	public void createMenu(Model model, String code, HttpSession session) throws Exception {
-		if (code.equals(MyProperties.getProperties("my.properties", "g_appid"))) {
-			log.info("#############Menu Initialize###############");
-			UtilsGZH.createMenu();
-			log.info("#############Menu Initialize END###############");
-		}
-	}
-
 	@RequestMapping(value = "/startService", method = RequestMethod.GET)
-	public void doGet(@RequestParam("signature") String signature, @RequestParam("timestamp") String timestamp,
-			@RequestParam("nonce") String nonce, @RequestParam("echostr") String echostr, HttpServletResponse response)
-			throws Exception {
-		log.info("收到微信get验证: signature" + signature + "\ttimestamp:" + timestamp + "\tnonce:" + nonce + "\techostr:"
-				+ echostr);
+	public void doGet(@RequestParam("signature") String signature, @RequestParam("timestamp") String timestamp, @RequestParam("nonce") String nonce,
+			@RequestParam("echostr") String echostr, HttpServletResponse response) throws Exception {
+		log.info("收到微信get验证: signature" + signature + "\ttimestamp:" + timestamp + "\tnonce:" + nonce + "\techostr:" + echostr);
 		if (UtilsGZH.checkSignature(signature, timestamp, nonce)) {
 			log.info("check success!");
 			response.getOutputStream().print(echostr);
@@ -304,9 +287,7 @@ public class G_CenterController extends BaseController {
 				textMessage.setFromUserName(toUserName);
 				textMessage.setCreateTime(new Date().getTime());
 				textMessage.setMsgType(G_MessageUtil.MESSSAGE_TYPE_TEXT);
-				String answer = JSON
-						.parseObject(MyAI.talk(requestMap.get("Content"), fromUserName).get("data").toString())
-						.get("answer").toString();
+				String answer = JSON.parseObject(MyAI.talk(requestMap.get("Content"), fromUserName).get("data").toString()).get("answer").toString();
 				textMessage.setContent("我不知道您说的什么");
 				if (MyString.isNotEmpty(answer))
 					textMessage.setContent(answer);
@@ -322,8 +303,7 @@ public class G_CenterController extends BaseController {
 				respMessage = respMessage.replace("#", 1 + "");
 				respMessage = respMessage.replace("title", "test");
 				respMessage = respMessage.replace("description", "test1");
-				respMessage = respMessage.replace("picurl",
-						"https://csdnimg.cn/release/edu/resource/images/trial_member_product.gif");
+				respMessage = respMessage.replace("picurl", "https://csdnimg.cn/release/edu/resource/images/trial_member_product.gif");
 				respMessage = respMessage.replace("url", "www.baidu.com");
 			}
 			// 事件推送
@@ -367,4 +347,23 @@ public class G_CenterController extends BaseController {
 		response.getWriter().print(respMessage);
 	}
 
+	/** 创建菜单createMenu?code=wxb90a701330e3bab8 */
+	@RequestMapping("/createMenu")
+	public void createMenu(Model model, String code, HttpSession session) throws Exception {
+		if (code.equals(MyProperties.getProperties("my.properties", "g_appid"))) {
+			log.info("#############Menu Initialize###############");
+			UtilsGZH.createMenu();
+			log.info("#############Menu Initialize END###############");
+		}
+	}
+
+	/** 生成小程序码createMenu?code=wxb90a701330e3bab8&shopId=4 */
+	@RequestMapping("/createCode")
+	public void createXCXcode(Model model, String code, long shopId, HttpSession session) throws Exception {
+		if (code.equals(MyProperties.getProperties("my.properties", "g_appid"))) {
+			log.info("#############Code Initialize###############");
+			UtilsGZH.createCode(shopId);
+			log.info("#############Code Initialize END###############");
+		}
+	}
 }

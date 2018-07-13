@@ -180,8 +180,12 @@ body{padding-top: 0px;}
                 </div>
             </div>
         </div>
-        	<div class="weui-cell"><a href="http://lbs.qq.com/tool/getpoint/">ssss</a></div>
-        	<div class="weui-cell"></div>
+       	<div class="weui-cell"><a href="http://lbs.qq.com/tool/getpoint/">坐标拾取</a></div>
+       	<div class="weui-cell">
+       		<img src="${src}/resources/pic/shop_6.jpg" width="45%" onclick="viewImg(this.src,0)"/>
+       		<img src="${src}/resources/pic/shop_6_two.jpg" width="45%" style="margin-left: 5%;" onclick="viewImg(this.src,0)"/>
+    	</div>
+       	<div class="weui-cell"></div>
     </div>
 </div>
 

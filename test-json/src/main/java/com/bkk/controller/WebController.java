@@ -15,6 +15,10 @@ import com.bkk.common.UtilsWeb;
 import com.bkk.domain.Shop;
 import com.bkk.domain.User;
 
+/**
+ * web所有请求-废弃-改用公众号
+ *  
+ **/
 @Controller
 @RequestMapping("/admin")
 public class WebController extends BaseController {
