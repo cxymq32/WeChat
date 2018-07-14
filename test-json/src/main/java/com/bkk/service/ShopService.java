@@ -38,9 +38,13 @@ public class ShopService extends BaseService {
 		return (List<Shop>) getHibernateTemplate().findByCriteria(criteria);
 	}
 
-	public void setShopCodeById(long shopId, String code) {
+	public void setShopCodeById(long shopId, String code, int close) {
 		Shop temp = this.findById(Shop.class, shopId);
-		temp.setShopCode(code);
+		if(close==0) {
+			temp.setShopCode(code);
+		}else {
+			temp.setShopCode(null);
+		}
 		this.update(temp);
 	}
 }

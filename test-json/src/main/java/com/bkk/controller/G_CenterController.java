@@ -44,9 +44,9 @@ public class G_CenterController extends BaseController {
 	/** 获取绑定码 */
 	@ResponseBody
 	@RequestMapping("/getShopCode")
-	public String getShopCode(Model model, long shopId, HttpServletRequest request) {
+	public String getShopCode(Model model, long shopId, int close, HttpServletRequest request) {
 		String code = MyString.shopCode();
-		shopService.setShopCodeById(shopId, code);
+		shopService.setShopCodeById(shopId, code, close);
 		return code;
 	}
 
@@ -357,7 +357,7 @@ public class G_CenterController extends BaseController {
 		}
 	}
 
-	/** 生成小程序码createMenu?code=wxb90a701330e3bab8&shopId=4 */
+	/** 生成小程序码createCode?code=wxb90a701330e3bab8&shopId=4 */
 	@RequestMapping("/createCode")
 	public void createXCXcode(Model model, String code, long shopId, HttpSession session) throws Exception {
 		if (code.equals(MyProperties.getProperties("my.properties", "g_appid"))) {

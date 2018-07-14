@@ -113,7 +113,7 @@ body{padding-top: 0px;}
                             <ul class="weui-uploader__files" id="uploaderFiles0">
                             </ul>
                             <div class="weui-uploader__input-box">
-                                <input onclick="selectSlideImage(0)" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                                <input onclick="selectImage(0)" class="weui-uploader__input" type="file" accept="image/*" multiple="">
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@ body{padding-top: 0px;}
                             <ul class="weui-uploader__files" id="uploaderFiles1">
                             </ul>
                             <div class="weui-uploader__input-box">
-                                <input onclick="selectSlideImage(1)" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                                <input onclick="selectImage(1)" class="weui-uploader__input" type="file" accept="image/*" multiple="">
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@ body{padding-top: 0px;}
                             <ul class="weui-uploader__files" id="uploaderFiles2">
                             </ul>
                             <div class="weui-uploader__input-box">
-                                <input onclick="selectSlideImage(2)" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                                <input onclick="selectImage(2)" class="weui-uploader__input" type="file" accept="image/*" multiple="">
                             </div>
                         </div>
                     </div>
@@ -174,7 +174,7 @@ body{padding-top: 0px;}
                 <div class="weui-cell__bd">绑定码:&nbsp;&nbsp;&nbsp;<span id="shopCode" style="color: red;">${shop.shopCode}</span></div>
                 <div class="weui-cell__ft">
                     <label for="switchCP" class="weui-switch-cp">
-                        <input id="switchCP" class="weui-switch-cp__input" type="checkbox" checked="checked">
+                        <input id="switchCP" class="weui-switch-cp__input" type="checkbox">
                         <div class="weui-switch-cp__box"></div>
                     </label>
                 </div>
@@ -182,8 +182,8 @@ body{padding-top: 0px;}
         </div>
        	<div class="weui-cell"><a href="http://lbs.qq.com/tool/getpoint/">坐标拾取</a></div>
        	<div class="weui-cell">
-       		<img src="${src}/resources/pic/shop_6.jpg" width="45%" onclick="viewImg(this.src,0)"/>
-       		<img src="${src}/resources/pic/shop_6_two.jpg" width="45%" style="margin-left: 5%;" onclick="viewImg(this.src,0)"/>
+       		<img src="${src}/resources/pic/shop_${shop.id}.jpg" width="45%" onclick="viewImg(this.src,0)"/>
+       		<img src="${src}/resources/pic/shop_${shop.id}_two.jpg" width="45%" style="margin-left: 5%;" onclick="viewImg(this.src,0)"/>
     	</div>
        	<div class="weui-cell"></div>
     </div>
@@ -192,12 +192,17 @@ body{padding-top: 0px;}
 	<script>
 	var time = ${timestamp};
 	$(function(){
+		if($("#shopCode").text()){
+			$("#switchCP").attr("checked","checked");
+		}
 		//获取绑定码
 		$("#switchCP").click(function(){
 			  if($("#shopCode").text()){
-				  $("#shopCode").html("");
+				$.post("${src}/centercontroller/getShopCode?shopId=${shop.id}&close=1", function(data){
+				  	$("#shopCode").html("");
+				});
 			  }else{
-				$.post("${src}/centercontroller/getShopCode?shopId=${shop.id}", function(data){
+				$.post("${src}/centercontroller/getShopCode?shopId=${shop.id}&close=0", function(data){
 				  	$("#shopCode").html(data.replace("\"","").replace("\"",""));
 				});
 			  }
@@ -214,7 +219,7 @@ body{padding-top: 0px;}
 				$("#menuImg").find("ul").append('<li class="weui-uploader__file"><img src="'+val+'" onclick="viewImg(\'${shop.menuImage}\','+i+')" width="100%" height="100%"/></li>')
 			}
 		});
-	})
+	});
 		wx.config({
 		    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 		    appId: '${appId}', // 必填，公众号的唯一标识
@@ -230,16 +235,16 @@ body{padding-top: 0px;}
 			alert(res)
 		    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 		});
-		function subImgForm(){
-		}
+		//预览图片
 		function viewImg(arr,i){
 			wx.previewImage({
 				current: arr.split(",")[i], // 当前显示图片的http链接
 				urls: arr.split(",") // 需要预览的图片http链接列表
 			});
 		}
+		//选择图片
 		var img = new Array();
-		function selectSlideImage(i){
+		function selectImage(i){
 			wx.chooseImage({
 				count: 1, // 默认9
 				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -247,20 +252,20 @@ body{padding-top: 0px;}
 				success: function (res) {
 					var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
 					img[img.length]=localIds+"";
+					//在每一个模块后追加预览小图片
 					$("#uploaderFiles"+i).append('<li class="weui-uploader__file"><img src="'+localIds
 							+'" style="width: 100%;height: 100%"  onclick="viewImg('+img+","+img.length+')"/></li>');
-					$("#picSize").html(img.length);
 					wx.uploadImage({
 						localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
 						isShowProgressTips: 1, // 默认为1，显示进度提示
 						success: function (res) {
 							var serverId = res.serverId; // 返回图片的服务器端ID
-							if(i==0){
+							if(i==0){//主图
 								$("#mainImage").val(serverId);
 								$("#uploaderFiles0").next().hide();
-							}if(i==1){
+							}if(i==1){//轮播
 								$("#slideImage").val($("#slideImage").val()+","+serverId);
-							}if(i==2){
+							}if(i==2){//菜单
 								$("#menuImage").val($("#menuImage").val()+","+serverId);
 							}
 						}
