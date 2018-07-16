@@ -152,7 +152,7 @@ Page({
   //预订
   comfirorder: function (e) {
     if (!wx.getStorageSync("openid")) {
-      app.getUserInfo();
+      getApp().getUserInfo();
     }    
     if (!this.data.phone){
       wx.showToast({
@@ -225,12 +225,12 @@ Page({
     }
     return shareObj;
   },
-  getDetail: function (options){
+  getDetail: function (shopId){
     var that = this;
     wx.request({
       url: getApp().data.servsers + '/getShopByPage', //仅为示例，并非真实的接口地址
       data: {
-        id: options.shopId,
+        id: shopId,
       },
       method: 'get',
       header: {
@@ -254,11 +254,20 @@ Page({
       }
     })
     that.setData({
-      shopId: options.shopId
+      shopId: shopId
     })
   },
   onLoad: function (options) {
-    this.getDetail(options);
+    options.shopId=4;
+    if (options.shopId>0){
+      this.getDetail(options.shopId);
+    }else{
+      var scene = decodeURIComponent(options.scene);
+      console.log("scence=" + scene);
+      var prame = scene.split("=");
+      console.log("prame=" + prame);
+      this.getDetail(prame[1]);
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

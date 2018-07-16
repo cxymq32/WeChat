@@ -80,7 +80,7 @@
   </view>  
 
 <view class='sale model-buttom' style='display:{{hideOther}}'>
-  <text class='sale_title'>店内优惠\n</text>
+  <text class='sale_title'>店内活动\n</text>
   <text>{{shop.sale}}</text>
 </view>
 
