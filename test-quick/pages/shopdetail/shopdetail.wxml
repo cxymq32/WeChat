@@ -13,24 +13,24 @@
       </block>
     </swiper>
 </view>
+<!-- 店铺信息 -->
 <view class='info'>
-  <view class='shopname model-buttom'>
+  <view class='shopname'>
     {{shop.shopName}}
     <image class="share" src='../../image/share.png'/>
     <button class='sharebutton' plain="true" data-name="shareBtn" open-type="share">发送给朋友</button>
   </view>
-  
-
-  <view class='address' bindtap="goto">
-    <image class="location" src='../../image/location.png'/>
-    {{shop.adress}}
-    <text class='navigation' >导航</text>
-  </view>
-
-  <view class='callphone'bindtap="call">
-    <image  class='icon-phone' src='../../image/phone.png'/>
-  </view>   
-</view> 
+  <view class='line'>
+    <view class='address' bindtap="goto">
+      <image class="location" src='../../image/location.png'/>
+      {{shop.adress}}
+    </view>
+    <view class='callphone'bindtap="call">
+      <image  class='icon-phone' src='../../image/phone.png'/>
+    </view>  
+  </view> 
+</view>
+<!-- 功能 -->
 <view class='function'>
 <form bindsubmit="comfirorder" report-submit>
 <view class='timePeople'>
